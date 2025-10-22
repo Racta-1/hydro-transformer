@@ -37,7 +37,7 @@ PY
 
 # Paths - edit as needed
 CONFIG="exp/lstm/lstm_upstream_1710_103048/config.yml"
-RUN_DIR="exp/lstm/lstm_upstream_1710_103048"
+RUN_DIR="exp/lstm/lstm_upstream_1710_103048/resume_from001"
 
 
 # Train one model on the full gage list

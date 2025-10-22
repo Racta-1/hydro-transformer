@@ -36,8 +36,8 @@ print("GPU:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else No
 PY
 
 # Paths - edit as needed
-CONFIG="02_train_configs/lstm/lstm_upstream.yml"
-GAGE_FILE="data/n10/gages/gage_list_clean.txt"
+CONFIG="02_train_configs/lstm/lstm_combined.yml"
+GAGE_FILE="data/n1/gages/gage_list_clean.txt"
 EXP_DIR="exp/lstm"
 
 
