@@ -33,6 +33,10 @@ Example
     python 03_summarize/evaluate_metrics.py \
         --pickle exp/lstm/lstm_upstream_1710_103048/resume_from001/test/model_epoch001/test_results.p \
         --outdir 03_summarize/metrics10/lstm_upstream2
+    
+    python 03_summarize/evaluate_metrics.py \
+        --pickle exp/lstm/lstm_combined_2210_174624/test/model_epoch001/test_results.p \
+        --outdir 03_summarize/metrics1/lstm_combined1
 
 Author
 ------

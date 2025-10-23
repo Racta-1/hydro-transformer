@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=test_lc2 # eidt as needed
+#SBATCH --job-name=test_lc1 # eidt as needed
 #SBATCH --partition=gpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -36,8 +36,8 @@ print("GPU:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else No
 PY
 
 # Paths - edit as needed
-GAGE_FILE="data/n10/gages/gage_list_clean.txt"
-RUN_DIR="exp/lstm/lstm_upstream_1710_103048/resume_from001/resume_from002"
+GAGE_FILE="data/n1/gages/gage_list_clean.txt"
+RUN_DIR="exp/lstm/lstm_combined_2210_174624"
 
 
 # Evaluate model on the full gage list
