@@ -189,7 +189,7 @@ save_validation_results: True
 dataset: nwm3retro
 
 # Path to data set root
-data_dir: data/n5
+data_dir: data/n1
 
 # Set to True, if train data file should be save to disk. If empty or False, train data is not saved.
 save_train_data: False
