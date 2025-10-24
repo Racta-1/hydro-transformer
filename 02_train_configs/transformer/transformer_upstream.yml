@@ -154,17 +154,15 @@ target_noise_std:
 # If a value, clips the gradients during training to that norm.
 clip_gradient_norm: 1
 
-use_frequencies: 
-- '1H'
+# use_frequencies: 
+# - '1H'
 
 # Defines which time steps are used to calculate the loss. Can't be larger than seq_length.
 # If use_frequencies is used, this needs to be a dict mapping each frequency to a predict_last_n-value, else an int.
-predict_last_n: 
-  1D: 1
+predict_last_n: 1
 
 # Length of the input sequence
-seq_length: 
-  1H: 1024
+seq_length: 1024
 
 
 

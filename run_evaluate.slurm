@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=test_lc1 # eidt as needed
+#SBATCH --job-name=test_lc2 # edit as needed
 #SBATCH --partition=gpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -37,7 +37,7 @@ PY
 
 # Paths - edit as needed
 GAGE_FILE="data/n1/gages/gage_list_clean.txt"
-RUN_DIR="exp/lstm/lstm_combined_2210_174624"
+RUN_DIR="exp/lstm/lstm_combined_2210_174624/resume_from001"
 
 
 # Evaluate model on the full gage list
