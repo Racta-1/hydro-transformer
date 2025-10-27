@@ -6,6 +6,8 @@ Usage:
     python cdf_metric.py --upstream lstm_upstream_valbas_metrics.csv \
                                --combined trans_comb_valbas_metrics.csv \
                                --out cdf_metrics_comparison
+
+    python 03_summarize/cdf_metric.py -u exp/lstm/lstm_upstream_2410_135040/test/model_epoch001/test_metrics.csv -c exp/lstm/lstm_combined_2210_174624/test/model_epoch001/test_metrics.csv -o 03_summarize/output/cdf_metric
 """
 
 import argparse
