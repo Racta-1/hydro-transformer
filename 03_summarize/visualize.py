@@ -7,8 +7,7 @@ Usage:
                           --metric NSE --title "(b) Upstream-Only NSE" \
                           --out upstream_nse_binned.pdf
 
-                        python 03_summarize/visualize.py --metrics exp/lstm/lstm_combined_2210_174624/test/model_epoch001/test_metrics.csv --coords data/camels_link.csv --metric NSE --title "(a) Combined LSTM NSE" --out combined_nse.pdf
-                        python 03_summarize/visualize.py --metrics exp/lstm/lstm_combined_2210_174624/test/model_epoch001/test_metrics.csv --coords data/camels_link.csv --metric NNSE --title "(a) Combined LSTM NNSE" --out 03_summarize/output/combined_nnse.pdf
+python 03_summarize/visualize.py --metrics exp/lstm/lstm_upstream_2410_135040/test/model_epoch001/test_metrics.csv --coords data/camels_link.csv --metric NSE --title "(b) Spatial Distribution of NSE for Upstream Configuration" --out 03_summarize/output/upstream_nse.png                        python 03_summarize/visualize.py --metrics exp/lstm/lstm_combined_2210_174624/test/model_epoch001/test_metrics.csv --coords data/camels_link.csv --metric NNSE --title "(a) Combined LSTM NNSE" --out 03_summarize/output/combined_nnse.pdf
 
 """
 
