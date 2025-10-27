@@ -30,18 +30,18 @@ args = parser.parse_args()
 # -----------------------------
 metrics = ["NSE", "NNSE", "KGE", "RMSE", "MSE", "Pearson-r"]
 nrows, ncols = 3, 3  # 3x3 layout (some cells unused)
-up_color = "#1f77b4"    # blue
-comb_color = "#d62728"  # red
+up_color = "#1F497D"    # blue
+comb_color = "#C00000"  # red
 
 # For consistent figure sizing in papers
 plt.rcParams.update({
-    "font.size": 3,
-    "axes.titlesize": 2,
+    "font.size": 6,
+    "axes.titlesize": 6,
     "axes.labelsize": 8,
     "legend.fontsize": 7,
     "xtick.labelsize": 7,
     "ytick.labelsize": 7,
-    "lines.linewidth": 1.3
+    # "lines.linewidth": 1.3
 })
 
 # -----------------------------
@@ -98,14 +98,14 @@ for i, metric in enumerate(metrics):
 
     ax.set_xlim(xmin, xmax)
     ax.set_ylim(0, 1)
-    ax.set_xlabel(metric)
+    ax.set_xlabel(f"({chr(97+i)}) " + metric)
     ax.set_ylabel("CDF")
     ax.grid(alpha=0.3)
     # place subplot label below the x-axis, centered
-    ax.text(0.5, -0.22, f"({chr(97+i)})",
-        transform=ax.transAxes,
-        ha="center", va="top",
-        fontsize=6)
+    # ax.text(0.5, -0.22, f"({chr(97+i)})",
+    #     transform=ax.transAxes,
+    #     ha="center", va="top",
+    #     fontsize=7)
 
 
 # Remove unused subplots if fewer than 9
@@ -113,11 +113,44 @@ for j in range(len(metrics), nrows * ncols):
     axes[j].axis("off")
 
 # Shared legend
-handles, labels = axes[0].get_legend_handles_labels()
-fig.legend(handles, labels, loc="upper center", ncol=2, frameon=False)
+# handles, labels = axes[0].get_legend_handles_labels()
+# fig.suptitle("Cumulative Distribution of Evaluation Metrics (Upstream vs Combined)", 
+#              fontsize=8, ha="center", va="top")
+# fig.legend(handles, labels, loc="upper center", ncol=2, frameon=False)
 
-plt.tight_layout(rect=[0, 0, 1, 0.96])
-plt.subplots_adjust(hspace=0.35, wspace=0.3)
+
+# # plt.tight_layout(rect=[0, 1, 1, 0.94])
+# plt.subplots_adjust(hspace=0.35, wspace=0.3, bottom=0.14, top=0.95)
+
+# -----------------------------
+# Layout, top title, and legend
+# -----------------------------
+plt.subplots_adjust(hspace=0.35, wspace=0.3, top=0.88, bottom=0.08)
+
+# Add top-centered title with padding
+fig.text(
+    0.5, 0.965,
+    "Cumulative Distribution of Evaluation Metrics (Upstream vs Combined)",
+    ha="center", va="top",
+    fontsize=10,
+    bbox=dict(
+        boxstyle="round,pad=0.35",
+        facecolor="white",
+        edgecolor="#CCCCCC",
+        alpha=0.9
+    )
+)
+
+# Shared legend directly below the title, centered
+handles, labels = axes[0].get_legend_handles_labels()
+fig.legend(
+    handles, labels,
+    loc="upper center",
+    ncol=2,
+    frameon=False,
+    bbox_to_anchor=(0.5, 0.93)  # legend just below title
+)
+
 
 # Save both PNG and PDF
 out_base = Path(args.out)

@@ -41,13 +41,21 @@ plt.rcParams.update({
 # -----------------------------
 # Load and prepare
 # -----------------------------
+# def load_metrics(path):
+#     df = pd.read_csv(path)
+#     df.columns = df.columns.str.strip()
+#     if "NSE" not in df.columns:
+#         raise ValueError(f"{path} must contain an 'NSE' column.")
+#     df["NSE"] = pd.to_numeric(df["NSE"], errors="coerce").replace([np.inf, -np.inf], np.nan)
+#     return df.dropna(subset=["NSE"])
+
 def load_metrics(path):
     df = pd.read_csv(path)
     df.columns = df.columns.str.strip()
-    if "NSE" not in df.columns:
-        raise ValueError(f"{path} must contain an 'NSE' column.")
-    df["NSE"] = pd.to_numeric(df["NSE"], errors="coerce").replace([np.inf, -np.inf], np.nan)
-    return df.dropna(subset=["NSE"])
+    if "KGE" not in df.columns:
+        raise ValueError(f"{path} must contain an 'KGE' column.")
+    df["KGE"] = pd.to_numeric(df["KGE"], errors="coerce").replace([np.inf, -np.inf], np.nan)
+    return df.dropna(subset=["KGE"])
 
 df_up = load_metrics(args.upstream)
 df_comb = load_metrics(args.combined)
@@ -58,10 +66,19 @@ df_comb = load_metrics(args.combined)
 bins = [-np.inf, 0.0, 0.5, 0.8, np.inf]
 labels = ["< 0.0", "0.0–0.5", "0.5–0.8", "> 0.8"]
 
+# def summarize_bins(df):
+#     df["NSE_bin"] = pd.cut(df["NSE"], bins=bins, labels=labels, include_lowest=True, right=False)
+#     return (
+#         df.groupby("NSE_bin")["NSE"]
+#           .agg(["count", "mean"])
+#           .reset_index()
+#           .assign(mean=lambda d: d["mean"].round(2))
+#     )
+
 def summarize_bins(df):
-    df["NSE_bin"] = pd.cut(df["NSE"], bins=bins, labels=labels, include_lowest=True, right=False)
+    df["KGE_bin"] = pd.cut(df["KGE"], bins=bins, labels=labels, include_lowest=True, right=False)
     return (
-        df.groupby("NSE_bin")["NSE"]
+        df.groupby("KGE_bin")["KGE"]
           .agg(["count", "mean"])
           .reset_index()
           .assign(mean=lambda d: d["mean"].round(2))
@@ -73,9 +90,21 @@ summary_comb = summarize_bins(df_comb)
 # -----------------------------
 # Plot
 # -----------------------------
-fig, axes = plt.subplots(1, 2, figsize=(6.4, 3.2), sharey=True)
+fig, axes = plt.subplots(1, 2, figsize=(9.2, 5.2), sharey=True)
 
 colors = ["#a7c7e7", "#b0c4de"]  # blue shades
+
+fig.suptitle(
+    "Basin Count by KGE Range for Combined and Upstream Models",
+    fontsize=10,
+    y=0.97,
+    bbox=dict(
+        boxstyle="round,pad=0.35",
+        facecolor="white",
+        edgecolor="#CCCCCC",
+        alpha=0.9
+    )
+)
 
 for ax, summary, title, label in zip(
     axes,
@@ -83,19 +112,23 @@ for ax, summary, title, label in zip(
     ["(a) Combined", "(b) Upstream"],
     ["Upstream", "Combined"]
 ):
-    bars = ax.bar(summary["NSE_bin"], summary["count"],
-                  color=colors[0] if "Up" in label else colors[1],
-                  edgecolor="gray", width=0.6)
+    # bars = ax.bar(summary["NSE_bin"], summary["count"],
+    #               color=colors[0] if "Up" in label else colors[1],
+    #               edgecolor="gray", width=0.6)
+    bars = ax.bar(summary["KGE_bin"], summary["count"],
+                color=colors[0] if "Up" in label else colors[1],
+                edgecolor="gray", width=0.6)
 
-    # add mean NSE above bars
+    # add mean KGE above bars
     for rect, mean_val in zip(bars, summary["mean"]):
         h = rect.get_height()
         if np.isfinite(mean_val):
             ax.text(rect.get_x() + rect.get_width() / 2, h + summary["count"].max() * 0.02,
-                    f"{mean_val:.2f}", ha="center", fontsize=6)
+                    f"{mean_val:.2f}", ha="center", fontsize=8)
 
-    ax.set_xlabel("NSE range")
-    ax.set_title(title, fontsize=10, loc="center")
+    # ax.set_xlabel("KGE range")
+    ax.set_xlabel("KGE range")
+    ax.set_title(title, fontsize=9, loc="center")
     ax.grid(axis="y", alpha=0.3)
     ax.set_axisbelow(True)
 

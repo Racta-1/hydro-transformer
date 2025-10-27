@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=tc2 # edit as needed
+#SBATCH --job-name=tu1 # edit as needed
 #SBATCH --partition=gpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -36,12 +36,15 @@ print("GPU:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else No
 PY
 
 # Paths - edit as needed
-CONFIG="exp/transformer/transformer_combined_2710_090139/config.yml"
-RUN_DIR="exp/transformer/transformer_combined_2710_090139"
+CONFIG="02_train_configs/transformer/transformer_upstream.yml"
+GAGE_FILE="data/n1/gages/gage_list_clean.txt"
+EXP_DIR="exp/transformer"
 
 
 # Train one model on the full gage list
-python neuralhydrology_py/resume_train.py "${CONFIG}" \
-  --run-dir "${RUN_DIR}" \
+python neuralhydrology_py/train.py "${CONFIG}" \
+  --mode all \
+  --gage-file "${GAGE_FILE}" \
   --epochs 1 \
-  --device cuda:0
+  --exp-dir "${EXP_DIR}" \
+  --device cuda:1

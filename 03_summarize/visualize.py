@@ -124,7 +124,7 @@ gdf["color"] = gdf[metric].apply(get_color)
 # Plot figure
 # -----------------------------
 fig, ax = plt.subplots(figsize=(9.2, 5))
-ax.set_title(args.title, fontsize=9, loc="left")
+ax.set_title(args.title, fontsize=10, loc="left")
 
 conus.plot(ax=ax, facecolor="#D9D9D9", edgecolor="#7A7A7A", linewidth=0.5)
 
@@ -141,7 +141,7 @@ ax.axis("off")
 # -----------------------------
 # Inset histogram
 # -----------------------------
-ax_in = inset_axes(ax, width="20%", height="20%", loc="lower left", borderpad=0.5)
+ax_in = inset_axes(ax, width="30%", height="30%", loc="lower left", borderpad=0.3)
 hxmin, hxmax = -1.0, 1.0
 ax_in.hist(vals, bins=np.linspace(hxmin, hxmax, 25),
            color="#e6eef6", edgecolor="#8aa7c4", linewidth=0.6)
@@ -169,7 +169,7 @@ legend_elems = [Rectangle((0, 0), 1, 1, facecolor=c, edgecolor="white", linewidt
                 for c in colors]
 ax.legend(legend_elems, labels, title=metric,
           loc="lower right", frameon=True, facecolor="white",
-          edgecolor="#7A7A7A", fontsize=8, title_fontsize=9).get_frame().set_alpha(0.9)
+          edgecolor="#7A7A7A", fontsize=10, title_fontsize=10).get_frame().set_alpha(0.9)
 
 plt.tight_layout()
 Path(args.out).parent.mkdir(parents=True, exist_ok=True)
