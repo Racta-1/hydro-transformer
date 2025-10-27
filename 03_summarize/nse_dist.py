@@ -92,7 +92,7 @@ for ax, summary, title, label in zip(
         h = rect.get_height()
         if np.isfinite(mean_val):
             ax.text(rect.get_x() + rect.get_width() / 2, h + summary["count"].max() * 0.02,
-                    f"{mean_val:.2f}", ha="center", va="bottom", fontsize=9)
+                    f"{mean_val:.2f}", ha="center", va="bottom", fontsize=6)
 
     ax.set_xlabel("NSE range")
     ax.set_title(title, fontsize=10, loc="center")
