@@ -108,13 +108,13 @@ dynamics_embedding:
 
 # ----> Transformer settings <----
 
-transformer_nlayers: 4
+transformer_nlayers: 2
 
 # type of positional encoding (sum or concatenate)
 transformer_positional_encoding_type: sum
 
 # dimension of feedforward in each encoding layer
-transformer_dim_feedforward: 512 
+transformer_dim_feedforward: 256 
 
 # dropout applied only to the positional encoding
 transformer_positional_dropout: 0.1
@@ -123,7 +123,7 @@ transformer_positional_dropout: 0.1
 transformer_dropout: 0.1
 
 # number of transformer heads
-transformer_nheads: 8
+transformer_nheads: 4
 
 # ----> General settings <----
 
@@ -143,7 +143,7 @@ loss: NSE
 learning_rate: 1e-4
 
 # Mini-batch size
-batch_size: 512 
+batch_size: 256 
 
 # Number of training epochs
 epochs: 50
@@ -162,7 +162,7 @@ clip_gradient_norm: 1
 predict_last_n: 1
 
 # Length of the input sequence
-seq_length: 1024
+seq_length: 512
 
 
 
@@ -189,7 +189,7 @@ save_validation_results: True
 dataset: nwm3retro
 
 # Path to data set root
-data_dir: data/n5
+data_dir: data/n1
 
 # Set to True, if train data file should be save to disk. If empty or False, train data is not saved.
 save_train_data: False

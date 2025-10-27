@@ -3,7 +3,7 @@
 #SBATCH --partition=gpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=5
+#SBATCH --cpus-per-task=1
 #SBATCH --mem=64G
 #SBATCH --gres=gpu:v100:1
 #SBATCH --time=11:59:00
@@ -37,7 +37,7 @@ PY
 
 # Paths - edit as needed
 GAGE_FILE="data/n1/gages/gage_list_clean.txt"
-RUN_DIR="exp/lstm/lstm_combined_2210_174624/resume_from001"
+RUN_DIR="exp/lstm/lstm_upstream_2410_135040"
 
 
 # Evaluate model on the full gage list
