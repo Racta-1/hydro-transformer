@@ -58,8 +58,43 @@ output_activation: linear
 
 # ----> General settings <----
 
+# # Number of cell states of the LSTM
+# hidden_size: 20
+
+# # Initial bias value of the forget gate
+# initial_forget_bias: 3
+
+# # Dropout applied to the output of the LSTM
+# output_dropout: 0.1
+
+
+statics_embedding:
+  type: fc
+  # define number of neurons per layer in the FC network used as embedding network
+  hiddens:
+    - 16
+    # - 64
+  # activation function of embedding network
+  activation: tanh
+  # dropout applied to embedding network
+  dropout: 0.1
+
+# define embedding network for dynamic inputs
+dynamics_embedding:
+  type: fc
+  # define number of neurons per layer in the FC network used as embedding network
+  hiddens:
+    - 32
+    # - 128
+  # activation function of embedding network
+  activation: tanh
+  # dropout applied to embedding network
+  dropout: 0.1
+
+# ----> General settings <----
+
 # Number of cell states of the LSTM
-hidden_size: 20
+hidden_size: 32
 
 # Initial bias value of the forget gate
 initial_forget_bias: 3
@@ -67,14 +102,27 @@ initial_forget_bias: 3
 # Dropout applied to the output of the LSTM
 output_dropout: 0.1
 
+# --- Training configuration -----------------------------------------------------------------------
+
+# specify optimizer [Adam]
+optimizer: AdamW
+
+
+# specify loss [MSE, NSE, RMSE]
+loss: NSE
+
+learning_rate: 1.6e-4
+
+# Mini-batch size
+batch_size: 256 
+
+
 # ----> Embedding network settings <----
 
 # statics_embedding:
 #   type: fc
 #   hiddens:
-#     - 30
-#     - 20
-#     - 64
+#     - 32
 #   activation: tanh
 #   dropout: 0.0
 
@@ -89,29 +137,29 @@ output_dropout: 0.1
 #   activation: tanh
 #   dropout: 0.0
 
-dynamics_embedding:
-  type: fc
-  hiddens:
-  - 64
-  activation: tanh
-  dropout: 0.1
+# dynamics_embedding:
+#   type: fc
+#   hiddens:
+#   - 64
+#   activation: tanh
+#   dropout: 0.1
 
-# --- Training configuration -----------------------------------------------------------------------
+# # --- Training configuration -----------------------------------------------------------------------
 
-# specify optimizer [Adam]
-optimizer: AdamW
+# # specify optimizer [Adam]
+# optimizer: AdamW
 
 
-num_workers: 8
+# num_workers: 12
 
-# specify loss [MSE, NSE, RMSE]
-loss: NSE
+# # specify loss [MSE, NSE, RMSE]
+# loss: NSE
 
-# specify learning rates to use starting at specific epochs (0 is the initial learning rate)
-learning_rate: 8e-4
+# # specify learning rates to use starting at specific epochs (0 is the initial learning rate)
+# learning_rate: 8e-4
 
-# Mini-batch size
-batch_size: 512
+# # Mini-batch size
+# batch_size: 64
 
 # Number of training epochs
 epochs: 1
@@ -119,17 +167,15 @@ epochs: 1
 # If a value, clips the gradients during training to that norm.
 clip_gradient_norm: 1
 
-use_frequencies: 
-- '1H'
+# use_frequencies: 
+# - '1H'
 
 # Defines which time steps are used to calculate the loss. Can't be larger than seq_length.
 # If use_frequencies is used, this needs to be a dict mapping each frequency to a predict_last_n-value, else an int.
-predict_last_n: 
-  1H: 1
+predict_last_n: 1
 
 # Length of the input sequence
-seq_length: 
-  1H: 1024
+seq_length: 512
 
 
 # Log the training loss every n steps

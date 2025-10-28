@@ -47,4 +47,4 @@ python neuralhydrology_py/train.py "${CONFIG}" \
   --gage-file "${GAGE_FILE}" \
   --epochs 1 \
   --exp-dir "${EXP_DIR}" \
-  --device cuda:1
+  --device cuda:0

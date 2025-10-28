@@ -82,7 +82,7 @@ summary_kge_comb = summarize_bins(df_comb, "KGE")
 # -----------------------------
 # Plot: 2x2 layout
 # -----------------------------
-fig, axes = plt.subplots(2, 2, figsize=(9.2, 8), sharex=True)
+fig, axes = plt.subplots(2, 2, figsize=(6, 4.2), sharex=True)
 
 fig.suptitle(
     "Basin Count by NSE and KGE Range for Combined and Upstream Models",

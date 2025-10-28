@@ -87,8 +87,8 @@ statics_embedding:
   type: fc
   # define number of neurons per layer in the FC network used as embedding network
   hiddens:
-    - 32
-    - 64
+    - 16
+    # - 64
   # activation function of embedding network
   activation: tanh
   # dropout applied to embedding network
@@ -99,8 +99,8 @@ dynamics_embedding:
   type: fc
   # define number of neurons per layer in the FC network used as embedding network
   hiddens:
-    - 64
-    - 128
+    - 32
+    # - 128
   # activation function of embedding network
   activation: tanh
   # dropout applied to embedding network
@@ -108,13 +108,13 @@ dynamics_embedding:
 
 # ----> Transformer settings <----
 
-transformer_nlayers: 2
+transformer_nlayers: 1
 
 # type of positional encoding (sum or concatenate)
 transformer_positional_encoding_type: sum
 
 # dimension of feedforward in each encoding layer
-transformer_dim_feedforward: 256 
+transformer_dim_feedforward: 64 
 
 # dropout applied only to the positional encoding
 transformer_positional_dropout: 0.1
@@ -123,14 +123,19 @@ transformer_positional_dropout: 0.1
 transformer_dropout: 0.1
 
 # number of transformer heads
-transformer_nheads: 4
+transformer_nheads: 2
 
 # ----> General settings <----
 
 # Number of cell states of the LSTM
-hidden_size: 256
+hidden_size: 32
 
-num_workers: 8
+# Initial bias value of the forget gate
+initial_forget_bias: 3
+
+# Dropout applied to the output of the LSTM
+output_dropout: 0.1
+
 # --- Training configuration -----------------------------------------------------------------------
 
 # specify optimizer [Adam]
@@ -140,7 +145,7 @@ optimizer: AdamW
 # specify loss [MSE, NSE, RMSE]
 loss: NSE
 
-learning_rate: 1e-4
+learning_rate: 1.6e-4
 
 # Mini-batch size
 batch_size: 256 
