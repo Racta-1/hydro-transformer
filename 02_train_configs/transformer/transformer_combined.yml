@@ -7,9 +7,9 @@ experiment_name: transformer_test
 run_dir: exp/transformer
 
 # files to specify training, validation and test basins (relative to code root or absolute path)
-# train_basin_file: data/splits/basins_train.txt
-# validation_basin_file: data/splits/basins_val.txt
-# test_basin_file: data/splits/basins_test.txt
+# train_basin_file: data1/splits/basins_train.txt
+# validation_basin_file: data1/splits/basins_val.txt
+# test_basin_file: data1/splits/basins_test.txt
 
 # training, validation and test time periods (format = 'dd/mm/yyyy')
 train_start_date: 1979-02-01
@@ -40,7 +40,7 @@ device: cuda:0
 validate_every: 1
 
 # specify how many random basins to use for validation
-validate_n_random_basins: 
+validate_n_random_basins: 50
 
 # By default, validation is cached (even is this argument is empty). Set to False, if you do not want to use it.
 cache_validation_data: True
@@ -58,7 +58,7 @@ metrics:
 - Pearson-r
 
 # --- Model configuration --------------------------------------------------------------------------
-model: transformer
+model: modifiedtransformer
 
 # path to weight file that should be used as initial weights. Leave empty to start from random weights
 checkpoint_path:
@@ -87,65 +87,61 @@ statics_embedding:
   type: fc
   # define number of neurons per layer in the FC network used as embedding network
   hiddens:
-    - 16
+    - 32
     # - 64
   # activation function of embedding network
   activation: tanh
   # dropout applied to embedding network
-  dropout: 0.1
+  dropout: 0.05
 
 # define embedding network for dynamic inputs
 dynamics_embedding:
   type: fc
   # define number of neurons per layer in the FC network used as embedding network
   hiddens:
-    - 32
+    - 64
     # - 128
   # activation function of embedding network
   activation: tanh
   # dropout applied to embedding network
-  dropout: 0.1
+  dropout: 0.05
 
 # ----> Transformer settings <----
 
-transformer_nlayers: 1
+# number of layers in transformer encoding:
+transformer_nlayers: 2
 
 # type of positional encoding (sum or concatenate)
 transformer_positional_encoding_type: sum
 
 # dimension of feedforward in each encoding layer
-transformer_dim_feedforward: 64 
+transformer_dim_feedforward: 256
 
 # dropout applied only to the positional encoding
-transformer_positional_dropout: 0.1
+transformer_positional_dropout: 0.05
 
 # dropout used in the encoding layers
-transformer_dropout: 0.1
+transformer_dropout: 0.05
 
 # number of transformer heads
-transformer_nheads: 2
+transformer_nheads: 4
 
 # ----> General settings <----
 
 # Number of cell states of the LSTM
-hidden_size: 32
-
-# Initial bias value of the forget gate
-initial_forget_bias: 3
-
-# Dropout applied to the output of the LSTM
-output_dropout: 0.1
+hidden_size: 64
 
 # --- Training configuration -----------------------------------------------------------------------
 
 # specify optimizer [Adam]
 optimizer: AdamW
 
+num_workers: 8
 
 # specify loss [MSE, NSE, RMSE]
 loss: NSE
 
-learning_rate: 1.6e-4
+learning_rate: 0.0008
 
 # Mini-batch size
 batch_size: 256 
@@ -159,27 +155,22 @@ target_noise_std:
 # If a value, clips the gradients during training to that norm.
 clip_gradient_norm: 1
 
-# use_frequencies: 
-# - '1H'
 
 # Defines which time steps are used to calculate the loss. Can't be larger than seq_length.
-# If use_frequencies is used, this needs to be a dict mapping each frequency to a predict_last_n-value, else an int.
 predict_last_n: 1
 
 # Length of the input sequence
-seq_length: 512
-
-
+seq_length: 512 
 
 
 # Log the training loss every n steps
-log_interval: 20
+log_interval: 1
 
 # If true, writes logging results into tensorboard file
 log_tensorboard: True
 
 # If a value and greater than 0, logs n random basins as figures during validation
-log_n_figures: 5
+log_n_figures: 2
 
 # Save model weights every n epochs
 save_weights_every: 1
@@ -230,7 +221,6 @@ static_attributes:
 - order_u
 - n_u
 - So_u
-# - Kchan_u
 - nCC_u
 - TopWdth_u
 - TopWdthCC_u
@@ -246,7 +236,6 @@ static_attributes:
 - order_d
 - n_d
 - So_d
-# - Kchan_d
 - nCC_d
 - TopWdth_d
 - TopWdthCC_d
@@ -261,7 +250,7 @@ static_attributes:
 
 # --- Miscellaneous configuration ------------------------------------------------------------------
 early_stopping: True   
-patience_early_stopping: 5 
+patience_early_stopping: 10 
 minimum_epochs_before_early_stopping: 10 
 dynamic_learning_rate: True 
 patience_dynamic_learning_rate: 3 

@@ -1,0 +1,151 @@
+experiment_name: informer_test
+
+model: informer
+
+timeF: True
+
+run_dir: exp/informer
+
+train_basin_file: data/n1/gages/gage_list_clean.txt
+validation_basin_file: data/n1/gages/gage_list_clean.txt
+test_basin_file: data/n1/gages/gage_list_clean.txt
+
+train_start_date: '01/02/1979'
+train_end_date: '30/12/2007'
+validation_start_date: '01/01/2008'
+validation_end_date: '30/12/2015'
+test_start_date: '01/01/2016'
+test_end_date: '01/01/2023'
+
+seed: 483593
+device: cuda:0
+
+validate_every: 1
+validate_n_random_basins: 50
+cache_validation_data: True
+
+metrics:
+- NSE
+- NNSE
+- MSE
+- RMSE
+- MAE
+- KGE
+- Pearson-r
+
+informer_n_layers: 2
+informer_n_heads: 4
+informer_factor: 3
+informer_distil: True
+informer_activation: 'gelu'
+informer_dropout: 0.1
+
+head: regression
+output_activation: linear
+
+statics_embedding:
+  type: fc
+  hiddens:
+    - 32
+  activation: tanh
+  dropout: 0.1
+
+dynamics_embedding:
+  type: fc
+  hiddens:
+    - 64
+  activation: tanh
+  dropout: 0.1
+
+hidden_size: 64
+
+initial_forget_bias: 3
+
+output_dropout: 0.1
+
+optimizer: AdamW
+
+loss: NSE
+
+learning_rate: 0.0008
+
+batch_size: 256
+
+epochs: 50
+
+clip_gradient_norm: 1
+
+predict_last_n: 1
+seq_length: 512
+
+num_workers: 8
+log_interval: 20
+log_tensorboard: True
+log_n_figures: 2
+save_weights_every: 1
+save_validation_results: True
+
+dataset: nwm3retro
+data_dir: data/n1
+save_train_data: False
+
+dynamic_inputs:
+- UGRD_10maboveground_d
+- TMP_2maboveground_d
+- APCP_surface_d
+- VGRD_10maboveground_d
+- streamflow_d
+- PRES_surface_d
+- DSWRF_surface_d
+- TMP_2maboveground_u
+- APCP_surface_u
+- VGRD_10maboveground_u
+- PRES_surface_u
+- DSWRF_surface_u
+- DLWRF_surface_u
+- UGRD_10maboveground_u
+
+target_variables:
+- streamflow_u
+
+clip_targets_to_zero:
+- streamflow_u
+
+static_attributes:
+- Contributing_Area_u
+- alt_u
+- order_u
+- n_u
+- So_u
+- nCC_u
+- TopWdth_u
+- TopWdthCC_u
+- ChSlp_u
+- BtmWdth_u
+- lon_u
+- lat_u
+- Shape_Area_u
+- Shape_Length_u
+- Reach_Length_u
+- Contributing_Area_d
+- alt_d
+- order_d
+- n_d
+- So_d
+- nCC_d
+- TopWdth_d
+- TopWdthCC_d
+- ChSlp_d
+- BtmWdth_d
+- lon_d
+- lat_d
+- Shape_Area_d
+- Shape_Length_d
+- Reach_Length_d
+
+early_stopping: True
+patience_early_stopping: 5
+minimum_epochs_before_early_stopping: 10
+dynamic_learning_rate: True
+patience_dynamic_learning_rate: 3
+factor_dynamic_learning_rate: 0.5

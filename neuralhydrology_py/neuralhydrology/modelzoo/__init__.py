@@ -19,6 +19,8 @@ from neuralhydrology.modelzoo.sequential_forecast_lstm import SequentialForecast
 from neuralhydrology.modelzoo.stacked_forecast_lstm import StackedForecastLSTM
 from neuralhydrology.modelzoo.transformer import Transformer
 from neuralhydrology.modelzoo.modifiedcudalstm import ModifiedCudaLSTM
+from neuralhydrology.modelzoo.modifiedtransformer import ModifiedTransformer, MinimalTransformer
+from neuralhydrology.modelzoo.informer import Informer
 from neuralhydrology.utils.config import Config
 
 SINGLE_FREQ_MODELS = [
@@ -86,6 +88,12 @@ def get_model(cfg: Config) -> nn.Module:
         model = MCLSTM(cfg=cfg)
     elif cfg.model.lower() == "transformer":
         model = Transformer(cfg=cfg)
+    elif cfg.model.lower() == "modifiedtransformer":
+        model = ModifiedTransformer(cfg=cfg)
+    elif cfg.model.lower() == "minimaltransformer":
+        model = MinimalTransformer(cfg=cfg)
+    elif cfg.model.lower() == "informer":
+        model = Informer(cfg=cfg)
     elif cfg.model.lower() == "modifiedcudalstm":
         model = ModifiedCudaLSTM(cfg=cfg)
     elif cfg.model.lower() == "mamba":

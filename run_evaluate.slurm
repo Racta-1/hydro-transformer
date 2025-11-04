@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=test_lc2 # edit as needed
+#SBATCH --job-name=test_tu1 # edit as needed
 #SBATCH --partition=gpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -12,7 +12,7 @@
 
 
 set -euo pipefail
-mkdir -p logs exp/lstm
+mkdir -p logs exp/transformer
 
 # Activate your env
 module load Anaconda3
@@ -37,7 +37,7 @@ PY
 
 # Paths - edit as needed
 GAGE_FILE="data/n1/gages/gage_list_clean.txt"
-RUN_DIR="exp/lstm/lstm_upstream_2410_135040"
+RUN_DIR="exp/transformer/transformer_upstream_3010_160153"
 
 
 # Evaluate model on the full gage list

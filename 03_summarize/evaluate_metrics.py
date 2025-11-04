@@ -35,8 +35,8 @@ Example
         --outdir 03_summarize/metrics10/lstm_upstream2
     
     python 03_summarize/evaluate_metrics.py \
-        --pickle exp/lstm/lstm_combined_2210_174624/resume_from001/test/model_epoch001/test_results.p \
-        --outdir 03_summarize/metricsn1/lstm_combined2
+        --pickle exp/transformer/transformer_upstream_3010_072829/test/model_epoch001/test_results.p \
+        --outdir 03_summarize/metrics_n1/trans_upstream1
 
 Author
 ------
@@ -60,7 +60,7 @@ args = parser.parse_args()
 # Assign arguments
 PICKLE_RESULTS_PATH = args.pickle
 OUTDIR = args.outdir
-TIME_KEY = "1H"
+TIME_KEY = "1h"
 OBS_VAR = "streamflow_u_obs"
 SIM_VAR = "streamflow_u_sim"
 # Try these time coordinate candidates in this order (first match wins)
