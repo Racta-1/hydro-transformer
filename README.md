@@ -97,7 +97,7 @@ Before training models, the dataset must be preprocessed into a format suitable 
 1. Download the time-series files and store in data/n{reach_value} 
 
 ```bash
-aws s3 cp s3://camels-nwm-reanalysis/n{reach_value}/ data/{reach_value}/time_series --recursive --no-sign-request
+aws s3 cp s3://camels-nwm-reanalysis/n{reach_value}/ data/n{reach_value}/time_series --recursive --no-sign-request
 ```
 
 2. **Basin Pair Preprocessing**  
