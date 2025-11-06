@@ -23,7 +23,8 @@ anvil_run.slurm
 anvil_resume.slurm  
 wukong_evaluate.slurm
 wukong_run.slurm
-wukong_resume.slurm     
+wukong_resume.slurm 
+commands.txt   
 
 # === Hydrology / Climate datasets ===
 *.nc
