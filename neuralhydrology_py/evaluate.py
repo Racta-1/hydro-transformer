@@ -15,6 +15,9 @@ def main():
         "--gage-file", type=Path, default=Path("data/n5/gages/gage_list_clean.txt"),
                         help="Whole gage list file (all mode)."
     )
+    parser.add_argument(
+        "--device", default="cuda:0", help="Device to use for evaluating the model"
+    )
     args = parser.parse_args()
 
     # Load config
@@ -31,6 +34,9 @@ def main():
     if args.gage_file is not None:
         config_dict["test_basin_file"] = str(args.gage_file)
 
+    if args.device is not None:
+        config_dict["device"] = str(args.device)
+        
     # Create config object
     cfg = Config(config_dict)
 
