@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=lc3 # edit as needed
+#SBATCH --job-name=lu3 # edit as needed
 #SBATCH --partition=gpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -12,7 +12,7 @@
 
 
 set -euo pipefail
-mkdir -p logs exp/transformer
+mkdir -p logs exp/lstm
 
 # Activate your env
 module load Anaconda3
@@ -36,12 +36,12 @@ print("GPU:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else No
 PY
 
 # Paths - edit as needed
-CONFIG="exp/transformer/transformer_combined_0311_190000/config.yml"
-RUN_DIR="exp/transformer/transformer_combined_0311_190000"
+CONFIG="exp/lstm/lstm_upstream_0511_115540/config.yml"
+RUN_DIR="exp/lstm/lstm_upstream_0511_115540"
 
 
 # Train one model on the full gage list
 python neuralhydrology_py/resume_train.py "${CONFIG}" \
   --run-dir "${RUN_DIR}" \
-  --epochs 1 \
+  --epochs 2 \
   --device cuda:0

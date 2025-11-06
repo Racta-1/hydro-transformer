@@ -31,8 +31,8 @@ Example
         --pickle ../exp/lstm/lstm_upstream_0610_140026/test/model_epoch001/test_results.p \
         --outdir metrics/lstm
     python 03_summarize/evaluate_metrics.py \
-        --pickle exp/lstm/lstm_upstream_1710_103048/resume_from001/test/model_epoch001/test_results.p \
-        --outdir 03_summarize/metrics10/lstm_upstream2
+        --pickle exp/lstm/lstm_upstream_0511_115540/resume_from001/test/model_epoch002/test_results.p \
+        --outdir 03_summarize/metricsn40/lstm_upstream3
     
     python 03_summarize/evaluate_metrics.py \
         --pickle exp/transformer/transformer_upstream_3010_072829/test/model_epoch001/test_results.p \

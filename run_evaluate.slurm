@@ -12,7 +12,7 @@
 
 
 set -euo pipefail
-mkdir -p logs exp/transformer
+mkdir -p logs exp/lstm
 
 # Activate your env
 module load Anaconda3
@@ -36,8 +36,8 @@ print("GPU:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else No
 PY
 
 # Paths - edit as needed
-GAGE_FILE="data/n1/gages/gage_list_clean.txt"
-RUN_DIR="exp/transformer/transformer_upstream_3010_160153"
+GAGE_FILE="data/n30/gages/gage_list_clean.txt"
+RUN_DIR="exp/lstm/lstm_upstream_0411_163926/resume_from001"
 
 
 # Evaluate model on the full gage list

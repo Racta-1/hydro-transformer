@@ -208,7 +208,7 @@ save_validation_results: True
 dataset: nwm3retro
 
 # Path to data set root
-data_dir: data/n30
+data_dir: data/n40
 
 # Forcing product [daymet, maurer, maurer_extended, nldas, nldas_extended, nldas_hourly]
 # can be either a list of forcings or a single forcing product
@@ -234,7 +234,6 @@ clip_targets_to_zero:
 # - basin_length_u
 # - basin_area_u
 # - reach_length_u
-static_attributes:
 static_attributes:
 - Contributing_Area_u
 - alt_u
