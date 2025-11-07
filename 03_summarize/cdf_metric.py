@@ -16,24 +16,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-# -----------------------------
-# Parse arguments
-# -----------------------------
 parser = argparse.ArgumentParser(description="Plot CDFs of hydrologic metrics from two CSV files.")
 parser.add_argument("--upstream", "-u", required=True, help="Path to upstream CSV file (metrics).")
 parser.add_argument("--combined", "-c", required=True, help="Path to combined CSV file (metrics).")
 parser.add_argument("--out", "-o", default="metric_cdf_comparison", help="Output file base name (no extension).")
 args = parser.parse_args()
 
-# -----------------------------
-# Settings
-# -----------------------------
+
 metrics = ["NSE", "NNSE", "KGE", "RMSE", "MSE", "Pearson-r"]
 nrows, ncols = 3, 3  # 3x3 layout (some cells unused)
 up_color = "#1F497D"    # blue
 comb_color = "#C00000"  # red
 
-# For consistent figure sizing in papers
+
 plt.rcParams.update({
     "font.size": 6,
     "axes.titlesize": 6,
@@ -44,19 +39,13 @@ plt.rcParams.update({
     # "lines.linewidth": 1.3
 })
 
-# -----------------------------
-# Load data
-# -----------------------------
+
 df_up = pd.read_csv(args.upstream)
 df_comb = pd.read_csv(args.combined)
 
-# Strip column names of spaces
 df_up.columns = df_up.columns.str.strip()
 df_comb.columns = df_comb.columns.str.strip()
 
-# -----------------------------
-# CDF computation helper
-# -----------------------------
 def get_cdf_data(x):
     """Return sorted x and corresponding cumulative probabilities."""
     x = np.asarray(pd.to_numeric(x, errors="coerce").dropna())
@@ -66,9 +55,6 @@ def get_cdf_data(x):
     y = np.linspace(0, 1, len(x))
     return x, y
 
-# -----------------------------
-# Figure setup
-# -----------------------------
 fig, axes = plt.subplots(nrows, ncols, figsize=(7.2, 6))
 axes = axes.flatten()
 
@@ -122,9 +108,6 @@ for j in range(len(metrics), nrows * ncols):
 # # plt.tight_layout(rect=[0, 1, 1, 0.94])
 # plt.subplots_adjust(hspace=0.35, wspace=0.3, bottom=0.14, top=0.95)
 
-# -----------------------------
-# Layout, top title, and legend
-# -----------------------------
 plt.subplots_adjust(hspace=0.35, wspace=0.3, top=0.88, bottom=0.08)
 
 # Add top-centered title with padding
