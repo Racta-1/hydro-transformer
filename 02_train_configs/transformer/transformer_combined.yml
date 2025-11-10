@@ -108,33 +108,33 @@ dynamics_embedding:
 
 # ----> Transformer settings <----
 
-transformer_nlayers: 1
+transformer_nlayers: 2
 
 # type of positional encoding (sum or concatenate)
 transformer_positional_encoding_type: sum
 
 # dimension of feedforward in each encoding layer
-transformer_dim_feedforward: 64 
+transformer_dim_feedforward: 128 
 
 # dropout applied only to the positional encoding
-transformer_positional_dropout: 0.1
+transformer_positional_dropout: 0.05
 
 # dropout used in the encoding layers
-transformer_dropout: 0.1
+transformer_dropout: 0.05
 
 # number of transformer heads
-transformer_nheads: 2
+transformer_nheads: 4
 
 # ----> General settings <----
 
 # Number of cell states of the LSTM
-hidden_size: 32
+hidden_size: 64
 
 # Initial bias value of the forget gate
 initial_forget_bias: 3
 
 # Dropout applied to the output of the LSTM
-output_dropout: 0.1
+output_dropout: 0.05
 
 # --- Training configuration -----------------------------------------------------------------------
 
@@ -162,13 +162,13 @@ clip_gradient_norm: 1
 # use_frequencies: 
 # - '1H'
 
-# Defines which time steps are used to calculate the loss. Can't be larger than seq_length.
-# If use_frequencies is used, this needs to be a dict mapping each frequency to a predict_last_n-value, else an int.
-predict_last_n: 1
 
 # Length of the input sequence
 seq_length: 512
 
+# Defines which time steps are used to calculate the loss. Can't be larger than seq_length.
+# If use_frequencies is used, this needs to be a dict mapping each frequency to a predict_last_n-value, else an int.
+predict_last_n: 240
 
 num_workers: 12
 
@@ -194,7 +194,7 @@ save_validation_results: True
 dataset: nwm3retro
 
 # Path to data set root
-data_dir: data/n20
+data_dir: data/check
 
 # Set to True, if train data file should be save to disk. If empty or False, train data is not saved.
 save_train_data: False

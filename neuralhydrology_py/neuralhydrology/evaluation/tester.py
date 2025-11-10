@@ -269,12 +269,21 @@ class BaseTester(object):
                 # index that specifies the position in the output sequence (relative to the end) can be inferred by
                 # computing the timedelta of the dates. To account for predict_last_n > 1 and multi-freq stuff, we
                 # need to add the frequency factor and remove 1 (to start at zero).
+                # coords = {
+                #     'date':
+                #         dates[lowest_freq][:, -1],
+                #     'time_step': ((dates[freq][0, :] - dates[freq][0, -1]) / pd.Timedelta(freq)).astype(np.int64) +
+                #                  frequency_factor - 1
+                # }
+                pred_n = int(predict_last_n[freq])
                 coords = {
-                    'date':
-                        dates[lowest_freq][:, -1],
-                    'time_step': ((dates[freq][0, :] - dates[freq][0, -1]) / pd.Timedelta(freq)).astype(np.int64) +
-                                 frequency_factor - 1
+                    'date': dates[lowest_freq][:, -1],
+                    # time_step 0 means last step, 1 means next lead, ... up to pred_n-1
+                    # (you can invert direction later if you want lead 0 to be furthest; this matches using last pred_n items)
+                    'time_step': np.arange(pred_n).astype(np.int64)
                 }
+
+
                 xr = xarray.Dataset(data_vars=data_vars, coords=coords)
                 xr = xr.reindex({
                     'date':
@@ -283,12 +292,15 @@ class BaseTester(object):
                 })
                 results[basin][freq]['xr'] = xr
 
-                # create datetime range at the current frequency
-                freq_date_range = pd.date_range(start=dates[lowest_freq][0, -1], end=dates[freq][-1, -1], freq=freq)
-                # remove datetime steps that are not being predicted from the datetime range
-                mask = np.ones(frequency_factor).astype(bool)
-                mask[:-predict_last_n[freq]] = False
-                freq_date_range = freq_date_range[np.tile(mask, len(xr['date']))]
+                # # create datetime range at the current frequency
+                # freq_date_range = pd.date_range(start=dates[lowest_freq][0, -1], end=dates[freq][-1, -1], freq=freq)
+                # # remove datetime steps that are not being predicted from the datetime range
+                # mask = np.ones(frequency_factor).astype(bool)
+                # mask[:-predict_last_n[freq]] = False
+                # freq_date_range = freq_date_range[np.tile(mask, len(xr['date']))]
+                single_sample_preds = pd.date_range(start=dates[freq][0, -pred_n], periods=pred_n, freq=freq)
+                freq_date_range = pd.DatetimeIndex(np.tile(single_sample_preds, len(xr['date'])))
+
 
                 # only warn once per freq
                 if frequency_factor < predict_last_n[freq] and basin == basins[0]:
@@ -298,13 +310,15 @@ class BaseTester(object):
                 if metrics:
                     for target_variable in self.cfg.target_variables:
                         # stack dates and time_steps so we don't just evaluate every 24h when use_frequencies=[1D, 1h]
-                        obs = xr.isel(time_step=slice(-frequency_factor, None)) \
+                        # obs = xr.isel(time_step=slice(-frequency_factor, None)) \
+                        obs = xr.isel(time_step=slice(-pred_n, None)) \
                             .stack(datetime=['date', 'time_step']) \
                             .drop_vars({'datetime', 'date', 'time_step'})[f"{target_variable}_obs"]
                         obs['datetime'] = freq_date_range
                         # check if there are observations for this period
                         if not all(obs.isnull()):
-                            sim = xr.isel(time_step=slice(-frequency_factor, None)) \
+                            # sim = xr.isel(time_step=slice(-frequency_factor, None)) \
+                            sim = xr.isel(time_step=slice(-pred_n, None)) \
                                 .stack(datetime=['date', 'time_step']) \
                                 .drop_vars({'datetime', 'date', 'time_step'})[f"{target_variable}_sim"]
                             sim['datetime'] = freq_date_range

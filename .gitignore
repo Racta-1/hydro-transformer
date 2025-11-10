@@ -23,7 +23,10 @@ anvil_run.slurm
 anvil_resume.slurm  
 wukong_evaluate.slurm
 wukong_run.slurm
-wukong_resume.slurm     
+wukong_resume.slurm
+03_summarize/output1
+03_summarize/compute_metrics.py 
+data/check
 
 # === Hydrology / Climate datasets ===
 *.nc
