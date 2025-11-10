@@ -26,6 +26,7 @@ wukong_run.slurm
 wukong_resume.slurm
 03_summarize/output1
 03_summarize/compute_metrics.py 
+03_summarize/read_pickle.py
 data/check
 
 # === Hydrology / Climate datasets ===
