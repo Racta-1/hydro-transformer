@@ -36,12 +36,12 @@ print("GPU:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else No
 PY
 
 # Paths - edit as needed
-CONFIG="exp/lstm/lstm_upstream_0511_115540/config.yml"
-RUN_DIR="exp/lstm/lstm_upstream_0511_115540"
+CONFIG="exp/lstm/transformer_upstream_1011_144629/config.yml"
+RUN_DIR="exp/lstm/transformer_upstream_1011_144629"
 
 
 # Train one model on the full gage list
 python neuralhydrology_py/resume_train.py "${CONFIG}" \
   --run-dir "${RUN_DIR}" \
-  --epochs 2 \
+  --epochs 1 \
   --device cuda:0

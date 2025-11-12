@@ -35,8 +35,8 @@ Example
         --outdir 03_summarize/metricsn40/lstm_upstream3
     
     python 03_summarize/evaluate_metrics.py \
-        --pickle exp/transformer/transformer_upstream_3010_072829/test/model_epoch001/test_results.p \
-        --outdir 03_summarize/metrics_n1/trans_upstream1
+        --pickle exp/transformer1/transformer_combined_1011_155841/test/model_epoch001/test_results.p \
+        --outdir 03_summarize/trans_n1/trans_comb1
 
 Author
 ------

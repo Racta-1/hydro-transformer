@@ -8,7 +8,7 @@ Usage:
         --upstream lstm_upstream_valbas_metrics.csv \
         --combined trans_comb_valbas_metrics.csv \
         --out nse_distribution_comparison
-    python 03_summarize/nse_dist.py -u exp/lstm/lstm_upstream_2410_135040/test/model_epoch001/test_metrics.csv -c exp/lstm/lstm_combined_2210_174624/test/model_epoch001/test_metrics.csv -o 03_summarize/output/nse_dist
+    python 03_summarize/nse_dist.py -u exp/lstm/transformer_upstream_1011_144629/test/model_epoch001/test_metrics.csv -c exp/lstm/transformer_combined_1011_091910/test/model_epoch001/test_metrics.csv -o 03_summarize/output/nse_dist
 """
 
 import argparse
@@ -70,7 +70,7 @@ summary_kge_up = summarize_bins(df_up, "KGE")
 summary_kge_comb = summarize_bins(df_comb, "KGE")
 
 
-fig, axes = plt.subplots(2, 2, figsize=(6, 4.2), sharex=True)
+fig, axes = plt.subplots(2, 2, figsize=(6, 4.5), sharex=True)
 
 fig.suptitle(
     "Basin Count by NSE and KGE Range for Combined and Upstream Models",
@@ -94,7 +94,7 @@ for rect, mean_val in zip(bars, summary_nse_comb["mean"]):
         ax.text(rect.get_x() + rect.get_width() / 2, h + summary_nse_comb["count"].max() * 0.02,
                 f"{mean_val:.2f}", ha="center", fontsize=8)
 ax.set_ylabel("Count of basins")
-ax.set_title("(a) NSE Combined", fontsize=10, loc="center")
+ax.set_title("(a) NSE Combined", fontsize=8, loc="center")
 ax.grid(axis="y", alpha=0.3)
 ax.set_axisbelow(True)
 
@@ -108,7 +108,7 @@ for rect, mean_val in zip(bars, summary_nse_up["mean"]):
         ax.text(rect.get_x() + rect.get_width() / 2, h + summary_nse_up["count"].max() * 0.02,
                 f"{mean_val:.2f}", ha="center", fontsize=8)
 ax.set_ylabel("Count of basins")
-ax.set_title("(b) NSE Upstream", fontsize=10, loc="center")
+ax.set_title("(b) NSE Upstream", fontsize=8, loc="center")
 ax.grid(axis="y", alpha=0.3)
 ax.set_axisbelow(True)
 
@@ -122,7 +122,7 @@ for rect, mean_val in zip(bars, summary_kge_comb["mean"]):
                 f"{mean_val:.2f}", ha="center", fontsize=8)
 ax.set_xlabel("KGE range")
 ax.set_ylabel("Count of basins")
-ax.set_title("(c) KGE Combined", fontsize=10, loc="center")
+ax.set_title("(c) KGE Combined", fontsize=8, loc="center")
 ax.grid(axis="y", alpha=0.3)
 ax.set_axisbelow(True)
 
@@ -137,7 +137,7 @@ for rect, mean_val in zip(bars, summary_kge_up["mean"]):
                 f"{mean_val:.2f}", ha="center", fontsize=8)
 ax.set_xlabel("KGE range")
 ax.set_ylabel("Count of basins")
-ax.set_title("(d) KGE Upstream", fontsize=10, loc="center")
+ax.set_title("(d) KGE Upstream", fontsize=8, loc="center")
 ax.grid(axis="y", alpha=0.3)
 ax.set_axisbelow(True)
 

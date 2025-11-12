@@ -87,7 +87,7 @@ statics_embedding:
   type: fc
   # define number of neurons per layer in the FC network used as embedding network
   hiddens:
-    - 32
+    - 16
     # - 64
   # activation function of embedding network
   activation: tanh
@@ -99,7 +99,7 @@ dynamics_embedding:
   type: fc
   # define number of neurons per layer in the FC network used as embedding network
   hiddens:
-    - 64
+    - 32
     # - 128
   # activation function of embedding network
   activation: tanh
@@ -109,13 +109,13 @@ dynamics_embedding:
 # ----> Transformer settings <----
 
 # number of layers in transformer encoding:
-transformer_nlayers: 2
+transformer_nlayers: 1
 
 # type of positional encoding (sum or concatenate)
 transformer_positional_encoding_type: sum
 
 # dimension of feedforward in each encoding layer
-transformer_dim_feedforward: 256
+transformer_dim_feedforward: 64
 
 # dropout applied only to the positional encoding
 transformer_positional_dropout: 0.05
@@ -124,12 +124,12 @@ transformer_positional_dropout: 0.05
 transformer_dropout: 0.05
 
 # number of transformer heads
-transformer_nheads: 4
+transformer_nheads: 2
 
 # ----> General settings <----
 
 # Number of cell states of the LSTM
-hidden_size: 64
+hidden_size: 32
 
 # --- Training configuration -----------------------------------------------------------------------
 
@@ -144,7 +144,7 @@ loss: NSE
 learning_rate: 0.0008
 
 # Mini-batch size
-batch_size: 32 
+batch_size: 256 
 
 # Number of training epochs
 epochs: 50
@@ -160,7 +160,7 @@ clip_gradient_norm: 1
 predict_last_n: 1
 
 # Length of the input sequence
-seq_length: 24 
+seq_length: 512
 
 
 # Log the training loss every n steps

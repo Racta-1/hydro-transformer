@@ -11,16 +11,6 @@ run_dir: exp/lstm
 # test_basin_file: data/splits/basins_test.txt
 
 # training, validation and test time periods (format = 'dd/mm/yyyy')
-# train_start_date: 1979-10-01
-# train_end_date: 2023-02-01
-
-# validation_start_date: 1979-10-01
-# validation_end_date: 2023-02-01
-
-# test_start_date: 1979-10-01
-# test_end_date: 2023-02-01
-
-
 train_start_date: 1979-02-01
 train_end_date: 2007-12-30
 
@@ -77,50 +67,6 @@ output_activation: linear
 # # Dropout applied to the output of the LSTM
 # output_dropout: 0.1
 
-# ----> Embedding network settings <----
-
-# statics_embedding:
-#   type: fc
-#   hiddens:
-#     - 30
-#     - 20
-#     - 64
-#   activation: tanh
-#   dropout: 0.0
-
-# # define embedding network for dynamic inputs
-# dynamics_embedding:
-#   type: fc
-#   # define the number of neurons per layer in the FC network used as embedding network
-#   hiddens:
-#     - 30
-#     - 20
-#     - 64
-#   activation: tanh
-#   dropout: 0.0
-
-# dynamics_embedding:
-#   type: fc
-#   hiddens:
-#   - 64
-#   activation: tanh
-#   dropout: 0.1
-
-# --- Training configuration -----------------------------------------------------------------------
-
-# specify optimizer [Adam]
-# optimizer: AdamW
-
-# num_workers: 12
-
-# # specify loss [MSE, NSE, RMSE]
-# loss: NSE
-
-# # specify learning rates to use starting at specific epochs (0 is the initial learning rate)
-# learning_rate: 8e-4
-
-# # Mini-batch size
-# batch_size: 64
 
 statics_embedding:
   type: fc
@@ -165,10 +111,11 @@ optimizer: AdamW
 # specify loss [MSE, NSE, RMSE]
 loss: NSE
 
-learning_rate: 0.8e-4
+learning_rate: 8e-4
 
 # Mini-batch size
 batch_size: 256 
+
 
 # Number of training epochs
 epochs: 1
@@ -184,7 +131,7 @@ clip_gradient_norm: 1
 predict_last_n: 1
 
 # Length of the input sequence
-seq_length: 512
+seq_length: 256
 
 
 # Log the training loss every n steps
@@ -208,7 +155,7 @@ save_validation_results: True
 dataset: nwm3retro
 
 # Path to data set root
-data_dir: data/n40
+data_dir: data/n1
 
 # Forcing product [daymet, maurer, maurer_extended, nldas, nldas_extended, nldas_hourly]
 # can be either a list of forcings or a single forcing product

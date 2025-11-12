@@ -111,7 +111,7 @@ optimizer: AdamW
 # specify loss [MSE, NSE, RMSE]
 loss: NSE
 
-learning_rate: 0.8e-4
+learning_rate: 8e-4
 
 # Mini-batch size
 batch_size: 256 
@@ -131,7 +131,7 @@ clip_gradient_norm: 1
 predict_last_n: 1
 
 # Length of the input sequence
-seq_length: 512
+seq_length: 256
 
 
 # Log the training loss every n steps
@@ -155,7 +155,7 @@ save_validation_results: True
 dataset: nwm3retro
 
 # Path to data set root
-data_dir: data/n40
+data_dir: data/n1
 
 # Forcing product [daymet, maurer, maurer_extended, nldas, nldas_extended, nldas_hourly]
 # can be either a list of forcings or a single forcing product

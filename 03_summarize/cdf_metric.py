@@ -7,7 +7,7 @@ Usage:
                                --combined trans_comb_valbas_metrics.csv \
                                --out cdf_metrics_comparison
 
-    python 03_summarize/cdf_metric.py -u exp/lstm/lstm_upstream_2410_135040/test/model_epoch001/test_metrics.csv -c exp/lstm/lstm_combined_2210_174624/test/model_epoch001/test_metrics.csv -o 03_summarize/output/cdf_metric
+    python 03_summarize/cdf_metric.py -u exp/lstm/transformer_upstream_1011_144629/test/model_epoch001/test_metrics.csv -c exp/lstm/transformer_combined_1011_091910/test/model_epoch001/test_metrics.csv -o 03_summarize/trans_n1/cdf_metric
 """
 
 import argparse
