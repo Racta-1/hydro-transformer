@@ -7,7 +7,8 @@ Usage:
                           --metric NSE --title "(b) Upstream-Only NSE" \
                           --out upstream_nse_binned.pdf
 
-python 03_summarize/visualize.py --metrics exp/transformer1/transformer_upstream_1311_124932/resume_from001/test/model_epoch001/test_metrics.csv --coords data/camels_link.csv --metric NSE --title "(b) Spatial Distribution of NSE for Upstream Configuration" --out 03_summarize/output/upstream_nse.png           python 03_summarize/visualize.py --metrics exp/transformer1/transformer_combined_1311_125139/resume_from001/test/model_epoch001/test_metrics.csv --coords data/camels_link.csv --metric NNSE --title "(a) Combined LSTM NNSE" --out 03_summarize/output/combined_nnse.pdf
+python 03_summarize/visualize.py --metrics exp/transformer1/transformer_upstream_1311_124932/resume_from001/test/model_epoch001/test_metrics.csv --coords data/camels_link.csv --metric NNSE --title "(b) Spatial Distribution of NSNE for Upstream Configuration" --out 03_summarize/output/upstream_nnse.png           
+python 03_summarize/visualize.py --metrics exp/transformer1/transformer_combined_1311_125139/resume_from001/test/model_epoch001/test_metrics.csv --coords data/camels_link.csv --metric NNSE --title "(a) Spatial Distribution of NNSE for Combined Configuration" --out 03_summarize/output/combined_nnse.pdf
 
 """
 
@@ -85,7 +86,7 @@ conus = gpd.read_file(args.shapefile)
 
 
 bins = [0.0, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
-labels = ['< 0.0', '0.0-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0']
+labels = ['0.0-0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0']
 colors = ['#8B0000', '#D32F2F', '#A7C7E7', '#6FA8DC', '#4682B4', '#2E5C8A', '#1A3A5C']
 
 
