@@ -7,7 +7,7 @@ Usage:
                                --combined trans_comb_valbas_metrics.csv \
                                --out cdf_metrics_comparison
 
-    python 03_summarize/cdf_metric.py -u exp/lstm/transformer_upstream_1011_144629/test/model_epoch001/test_metrics.csv -c exp/lstm/transformer_combined_1011_091910/test/model_epoch001/test_metrics.csv -o 03_summarize/trans_n1/cdf_metric
+    python 03_summarize/cdf_metric.py -u exp/transformer1/transformer_upstream_1311_124932/resume_from001/test/model_epoch001/test_metrics.csv -c exp/transformer1/transformer_combined_1311_125139/resume_from001/test/model_epoch001/test_metrics.csv -o 03_summarize/output/
 """
 
 import argparse
@@ -23,8 +23,8 @@ parser.add_argument("--out", "-o", default="metric_cdf_comparison", help="Output
 args = parser.parse_args()
 
 
-metrics = ["NSE", "NNSE", "KGE", "RMSE", "MSE", "Pearson-r"]
-nrows, ncols = 3, 3  # 3x3 layout (some cells unused)
+metrics = ["NNSE", "KGE", "Pearson-r", "RMSE", ]
+nrows, ncols = 2, 2  # 3x3 layout (some cells unused)
 up_color = "#1F497D"    # blue
 comb_color = "#C00000"  # red
 
@@ -55,7 +55,7 @@ def get_cdf_data(x):
     y = np.linspace(0, 1, len(x))
     return x, y
 
-fig, axes = plt.subplots(nrows, ncols, figsize=(7.2, 6))
+fig, axes = plt.subplots(nrows, ncols, figsize=(7.5, 5))
 axes = axes.flatten()
 
 for i, metric in enumerate(metrics):
@@ -108,21 +108,21 @@ for j in range(len(metrics), nrows * ncols):
 # # plt.tight_layout(rect=[0, 1, 1, 0.94])
 # plt.subplots_adjust(hspace=0.35, wspace=0.3, bottom=0.14, top=0.95)
 
-plt.subplots_adjust(hspace=0.35, wspace=0.3, top=0.88, bottom=0.08)
+plt.subplots_adjust(hspace=0.35, wspace=0.3, top=0.88, bottom=0.00)
 
 # Add top-centered title with padding
-fig.text(
-    0.5, 0.965,
-    "Cumulative Distribution of Evaluation Metrics (Upstream vs Combined)",
-    ha="center", va="top",
-    fontsize=10,
-    bbox=dict(
-        boxstyle="round,pad=0.35",
-        facecolor="white",
-        edgecolor="#CCCCCC",
-        alpha=0.9
-    )
-)
+# fig.text(
+#     0.5, 0.965,
+#     "Cumulative Distribution of Evaluation Metrics (Upstream vs Combined)",
+#     ha="center", va="top",
+#     fontsize=10,
+#     bbox=dict(
+#         boxstyle="round,pad=0.35",
+#         facecolor="white",
+#         edgecolor="#CCCCCC",
+#         alpha=0.9
+#     )
+# )
 
 # Shared legend directly below the title, centered
 handles, labels = axes[0].get_legend_handles_labels()

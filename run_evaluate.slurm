@@ -37,7 +37,7 @@ PY
 
 # Paths - edit as needed
 GAGE_FILE="data/n1/gages/gage_list_clean.txt"
-RUN_DIR="exp/lstm/transformer_upstream_1011_144629/resume_from001"
+RUN_DIR="exp/transformer1/transformer_upstream_1311_124932/resume_from001"
 
 
 # Evaluate model on the full gage list

@@ -7,7 +7,7 @@ Usage:
                           --metric NSE --title "(b) Upstream-Only NSE" \
                           --out upstream_nse_binned.pdf
 
-python 03_summarize/visualize.py --metrics exp/lstm/lstm_upstream_2410_135040/test/model_epoch001/test_metrics.csv --coords data/camels_link.csv --metric NSE --title "(b) Spatial Distribution of NSE for Upstream Configuration" --out 03_summarize/output/upstream_nse.png                        python 03_summarize/visualize.py --metrics exp/lstm/lstm_combined_2210_174624/test/model_epoch001/test_metrics.csv --coords data/camels_link.csv --metric NNSE --title "(a) Combined LSTM NNSE" --out 03_summarize/output/combined_nnse.pdf
+python 03_summarize/visualize.py --metrics exp/transformer1/transformer_upstream_1311_124932/resume_from001/test/model_epoch001/test_metrics.csv --coords data/camels_link.csv --metric NSE --title "(b) Spatial Distribution of NSE for Upstream Configuration" --out 03_summarize/output/upstream_nse.png           python 03_summarize/visualize.py --metrics exp/transformer1/transformer_combined_1311_125139/resume_from001/test/model_epoch001/test_metrics.csv --coords data/camels_link.csv --metric NNSE --title "(a) Combined LSTM NNSE" --out 03_summarize/output/combined_nnse.pdf
 
 """
 
@@ -22,9 +22,6 @@ from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 from pathlib import Path
 
 
-# -----------------------------
-# Parse arguments
-# -----------------------------
 parser = argparse.ArgumentParser(description="Visualize basin metrics across CONUS.")
 parser.add_argument("--metrics", "-m", required=True, help="CSV file with basin metrics (must have 'basin' column).")
 parser.add_argument("--coords", "-c", required=True, help="CSV file with basin coordinates (must have gages, lon, lat).")
@@ -36,9 +33,6 @@ parser.add_argument("--shapefile", "-s", default="data/us_states_shapefile/tl_20
 args = parser.parse_args()
 
 
-# -----------------------------
-# Helper: normalize gage/basin IDs
-# -----------------------------
 def normalize_id(obj) -> str:
     s = str(obj)
     digits = re.sub(r"\D", "", s)
@@ -49,9 +43,7 @@ def normalize_id(obj) -> str:
     return digits
 
 
-# -----------------------------
-# Load and merge data
-# -----------------------------
+
 df_metrics = pd.read_csv(args.metrics)
 df_coords = pd.read_csv(args.coords)
 
@@ -79,9 +71,7 @@ total = len(merged)
 matched = merged["lat"].notna().sum()
 print(f"Matched {matched} of {total} basins ({matched/total:.1%}).")
 
-# -----------------------------
-# Prepare metric for plotting
-# -----------------------------
+
 metric = args.metric
 if metric not in merged.columns:
     raise ValueError(f"Metric '{metric}' not found in file. Available: {list(merged.columns)}")
@@ -90,15 +80,10 @@ merged[metric] = pd.to_numeric(merged[metric], errors="coerce").replace([np.inf,
 vals = merged[metric].dropna().to_numpy()
 median_val = float(np.nanmedian(vals)) if vals.size else np.nan
 
-# -----------------------------
-# Create GeoDataFrame
-# -----------------------------
 gdf = gpd.GeoDataFrame(merged, geometry=gpd.points_from_xy(merged['lon'], merged['lat']))
 conus = gpd.read_file(args.shapefile)
 
-# -----------------------------
-# Color bins (for NSE-style metrics)
-# -----------------------------
+
 bins = [0.0, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
 labels = ['< 0.0', '0.0-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0']
 colors = ['#8B0000', '#D32F2F', '#A7C7E7', '#6FA8DC', '#4682B4', '#2E5C8A', '#1A3A5C']
@@ -119,9 +104,6 @@ def get_color(val):
 
 gdf["color"] = gdf[metric].apply(get_color)
 
-# -----------------------------
-# Plot figure
-# -----------------------------
 fig, ax = plt.subplots(figsize=(9.2, 5))
 ax.set_title(args.title, fontsize=10, loc="left")
 
@@ -137,9 +119,7 @@ ax.set_xlim(-125, -66)
 ax.set_ylim(24, 50)
 ax.axis("off")
 
-# -----------------------------
-# Inset histogram
-# -----------------------------
+
 ax_in = inset_axes(ax, width="30%", height="30%", loc="lower left", borderpad=0.3)
 hxmin, hxmax = -1.0, 1.0
 ax_in.hist(vals, bins=np.linspace(hxmin, hxmax, 25),
@@ -161,9 +141,6 @@ if np.isfinite(median_val):
                bbox=dict(facecolor="white", alpha=0.85, edgecolor="none"),
                clip_on=False)
 
-# -----------------------------
-# Legend
-# -----------------------------
 legend_elems = [Rectangle((0, 0), 1, 1, facecolor=c, edgecolor="white", linewidth=0.5)
                 for c in colors]
 ax.legend(legend_elems, labels, title=metric,
