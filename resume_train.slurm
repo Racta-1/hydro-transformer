@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=lu3 # edit as needed
+#SBATCH --job-name=pitc1_resume # edit as needed
 #SBATCH --partition=gpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -36,8 +36,8 @@ print("GPU:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else No
 PY
 
 # Paths - edit as needed
-CONFIG="exp/transformer1/transformer_upstream_1311_124932/config.yml"
-RUN_DIR="exp/transformer1/transformer_upstream_1311_124932/resume_from001"
+CONFIG="exp/pitransformer1/transformer_combined_2411_190850/config.yml"
+RUN_DIR="exp/pitransformer1/transformer_combined_2411_190850/"
 
 
 # Train one model on the full gage list

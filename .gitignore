@@ -20,7 +20,10 @@ exp/
 run_train_parallel.slurm
 anvil_evaluate.slurm
 anvil_run.slurm
-anvil_resume.slurm       
+anvil_resume.slurm
+results/
+results1/
+# plots/   
 
 # === Hydrology / Climate datasets ===
 *.nc

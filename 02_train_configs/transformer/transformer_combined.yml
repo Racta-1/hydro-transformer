@@ -70,7 +70,6 @@ head: regression
 output_activation: linear
 
 # ----> Embedding network settings <----
-
 # define embedding network for static inputs
 # statics_embedding:
 #   type: fc
@@ -92,7 +91,7 @@ statics_embedding:
   # activation function of embedding network
   activation: tanh
   # dropout applied to embedding network
-  dropout: 0.05
+  dropout: 0.1
 
 # define embedding network for dynamic inputs
 dynamics_embedding:
@@ -104,7 +103,7 @@ dynamics_embedding:
   # activation function of embedding network
   activation: tanh
   # dropout applied to embedding network
-  dropout: 0.05
+  dropout: 0.1
 
 # ----> Transformer settings <----
 
@@ -115,16 +114,16 @@ transformer_nlayers: 1
 transformer_positional_encoding_type: sum
 
 # dimension of feedforward in each encoding layer
-transformer_dim_feedforward: 64
+transformer_dim_feedforward: 128
 
 # dropout applied only to the positional encoding
-transformer_positional_dropout: 0.05
+transformer_positional_dropout: 0.1
 
 # dropout used in the encoding layers
-transformer_dropout: 0.05
+transformer_dropout: 0.1
 
 # number of transformer heads
-transformer_nheads: 2
+transformer_nheads: 4
 
 # ----> General settings <----
 
@@ -141,7 +140,7 @@ optimizer: AdamW
 # specify loss [MSE, NSE, RMSE]
 loss: NSE
 
-learning_rate: 0.0008
+learning_rate: 0.0001
 
 # Mini-batch size
 batch_size: 256 
@@ -160,7 +159,7 @@ clip_gradient_norm: 1
 predict_last_n: 1
 
 # Length of the input sequence
-seq_length: 512
+seq_length: 256
 
 
 # Log the training loss every n steps
@@ -185,7 +184,7 @@ save_validation_results: True
 dataset: nwm3retro
 
 # Path to data set root
-data_dir: data/n1
+data_dir: data/n5
 
 # Set to True, if train data file should be save to disk. If empty or False, train data is not saved.
 save_train_data: False

@@ -58,7 +58,7 @@ metrics:
 - Pearson-r
 
 # --- Model configuration --------------------------------------------------------------------------
-model: informer
+model: cnn
 
 # path to weight file that should be used as initial weights. Leave empty to start from random weights
 checkpoint_path:
@@ -190,6 +190,13 @@ data_dir: data/n1
 save_train_data: False
 
 dynamic_inputs:
+- UGRD_10maboveground_d
+- TMP_2maboveground_d
+- APCP_surface_d
+- VGRD_10maboveground_d
+- streamflow_d
+- PRES_surface_d
+- DSWRF_surface_d
 - TMP_2maboveground_u
 - APCP_surface_u
 - VGRD_10maboveground_u
@@ -213,7 +220,6 @@ static_attributes:
 - order_u
 - n_u
 - So_u
-# - Kchan_u
 - nCC_u
 - TopWdth_u
 - TopWdthCC_u
@@ -224,11 +230,26 @@ static_attributes:
 - Shape_Area_u
 - Shape_Length_u
 - Reach_Length_u
+- Contributing_Area_d
+- alt_d
+- order_d
+- n_d
+- So_d
+- nCC_d
+- TopWdth_d
+- TopWdthCC_d
+- ChSlp_d
+- BtmWdth_d
+- lon_d
+- lat_d
+- Shape_Area_d
+- Shape_Length_d
+- Reach_Length_d
 
 
 # --- Miscellaneous configuration ------------------------------------------------------------------
 early_stopping: True   
-patience_early_stopping: 5 
+patience_early_stopping: 10 
 minimum_epochs_before_early_stopping: 10 
 dynamic_learning_rate: True 
 patience_dynamic_learning_rate: 3 

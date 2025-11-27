@@ -58,7 +58,7 @@ metrics:
 - Pearson-r
 
 # --- Model configuration --------------------------------------------------------------------------
-model: informer
+model: cnn
 
 # path to weight file that should be used as initial weights. Leave empty to start from random weights
 checkpoint_path:

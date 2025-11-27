@@ -261,6 +261,65 @@ class MaskedNSELoss(BaseLoss):
         # here we need to subset the per_basin_target_stds. We slice to keep the shape of [bs, seq, 1]
         return {key: value[:, :, n_target:n_target + 1] for key, value in additional_data.items()}
 
+class PhysicsInformedMaskedNSELoss(MaskedNSELoss):
+
+    def __init__(self, cfg, eps=0.1, lambda_phys=0.01, lambda_nonneg=0.001):
+        # super().__init__(cfg, eps)
+        # self.lambda_phys = lambda_phys
+        # self.lambda_nonneg = lambda_nonneg
+
+        BaseLoss.__init__(
+                self,
+                cfg,
+                prediction_keys=['y_hat'],
+                ground_truth_keys=['y'],
+                additional_data=[]
+        )
+
+        self.eps = eps
+        self.lambda_phys = lambda_phys
+        self.lambda_nonneg = lambda_nonneg
+
+    def _get_loss(self, prediction, ground_truth, **kwargs):
+        # ------------------------------
+        # ORIGINAL NSE LOSS
+        # ------------------------------
+        mask = ~torch.isnan(ground_truth['y'])
+        y_hat = prediction['y_hat'][mask]
+        y = ground_truth['y'][mask]
+
+        per_basin_target_stds = torch.std(y, dim=0, keepdim=True)
+        per_basin_target_stds = per_basin_target_stds.expand_as(y_hat)
+
+        squared_error = (y_hat - y) ** 2
+        weights = 1 / (per_basin_target_stds + self.eps)**2
+        nse_loss = torch.mean(weights * squared_error)
+
+        # ------------------------------
+        # PHYSICS 1: NON-NEGATIVITY
+        # ------------------------------
+        nonneg_loss = torch.relu(-y_hat).mean()
+
+        # ------------------------------
+        # PHYSICS 2: UPSTREAM SHOULD NOT EXCEED DOWNSTREAM
+        # ------------------------------
+        if 'streamflow_d' in ground_truth:
+            Qd = ground_truth['streamflow_d'][mask]
+            phys_loss = torch.relu(y_hat - Qd).mean()
+        else:
+            phys_loss = torch.tensor(0.0, device=y_hat.device)
+
+        # ------------------------------
+        # TOTAL LOSS
+        # ------------------------------
+        loss = (
+            nse_loss
+            + self.lambda_phys * phys_loss
+            + self.lambda_nonneg * nonneg_loss
+        )
+
+        return loss
+
 
 class MaskedGMMLoss(BaseLoss):
     """Average negative log-likelihood for a gaussian mixture model (GMM). 

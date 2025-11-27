@@ -20,7 +20,9 @@ from neuralhydrology.modelzoo.stacked_forecast_lstm import StackedForecastLSTM
 from neuralhydrology.modelzoo.transformer import Transformer
 from neuralhydrology.modelzoo.modifiedcudalstm import ModifiedCudaLSTM
 from neuralhydrology.modelzoo.modifiedtransformer import ModifiedTransformer, MinimalTransformer
-from neuralhydrology.modelzoo.informer import Informer
+from neuralhydrology.modelzoo.informer import InformerModel
+from neuralhydrology.modelzoo.fedformer import FEDformerModel
+from neuralhydrology.modelzoo.cnn import CNN1D
 from neuralhydrology.utils.config import Config
 
 SINGLE_FREQ_MODELS = [
@@ -93,7 +95,9 @@ def get_model(cfg: Config) -> nn.Module:
     elif cfg.model.lower() == "minimaltransformer":
         model = MinimalTransformer(cfg=cfg)
     elif cfg.model.lower() == "informer":
-        model = Informer(cfg=cfg)
+        model = InformerModel(cfg=cfg)
+    elif cfg.model.lower() == "fedformer":
+        model = FEDformerModel(cfg=cfg)
     elif cfg.model.lower() == "modifiedcudalstm":
         model = ModifiedCudaLSTM(cfg=cfg)
     elif cfg.model.lower() == "mamba":
@@ -106,6 +110,8 @@ def get_model(cfg: Config) -> nn.Module:
         model = SequentialForecastLSTM(cfg=cfg)
     elif cfg.model.lower() == "stacked_forecast_lstm":
         model = StackedForecastLSTM(cfg=cfg)
+    elif cfg.model.lower() == "cnn":
+        model = CNN1D(cfg=cfg)
     elif cfg.model.lower() == "hybrid_model":
         model = HybridModel(cfg=cfg)
     else:

@@ -1,52 +1,53 @@
+# --- Experiment configurations --------------------------------------------------------------------
+
 # experiment name, used as folder name
-experiment_name: fedformer_test_v2
+experiment_name: transformer_test
 
-# base model type
-model: fedformer
+# place to store run directory (if empty runs are stored in code_dir/runs/)
+run_dir: exp/transformer
 
-# use timestamp positional encoding method
-timeF: False
+# files to specify training, validation and test basins (relative to code root or absolute path)
+# train_basin_file: data1/splits/basins_train.txt
+# validation_basin_file: data1/splits/basins_val.txt
+# test_basin_file: data1/splits/basins_test.txt
 
-# --- FEDformer configurations --------------------------------------------------------------------------
-fedformer_modes: 1
-fedformer_version: 'Fourier'
-fedformer_base: 'chebyshev'
-fedformer_mode_select: 'not'
-fedformer_factor: 1
-
-fedformer_nheads: 4
-fedformer_e_layers: 4
-fedformer_d_layers: 1
-
-# place to store run directory
-run_dir: exp/fedformer
-
-# training, validation and test time periods
-train_start_date: 1979-10-01
+# training, validation and test time periods (format = 'dd/mm/yyyy')
+train_start_date: 1979-02-01
 train_end_date: 2007-12-30
 
 validation_start_date: 2008-01-01
 validation_end_date: 2015-12-30
 
 test_start_date: 2016-01-01
-test_end_date: 2023-02-01
+test_end_date: 2023-01-01
 
-# if you want to use different periods per basin
-per_basin_train_periods_file:
-per_basin_validation_periods_file:
-per_basin_test_periods_file:
 
-# fixed seed
+
+# if you want to use different (continuous or split) periods per basin (and period) define path to pickle files here.
+per_basin_train_periods_file: 
+per_basin_validation_periods_file: 
+per_basin_test_periods_file: 
+
+# fixed seed, leave empty to use a random seed
 seed: 483593
 
+# which GPU (id) to use [in format of cuda:0, cuda:1 etc, or cpu or None]
 device: cuda:0
 
 # --- Validation configuration ---------------------------------------------------------------------
 
+# specify after how many epochs to perform validation
 validate_every: 1
+
+# specify how many random basins to use for validation
 validate_n_random_basins: 50
+
+# By default, validation is cached (even is this argument is empty). Set to False, if you do not want to use it.
 cache_validation_data: True
 
+# specify which metrics to calculate during validation (see neuralhydrology.evaluation.metrics)
+# this can either be a list or a dictionary. If a dictionary is used, the inner keys must match the name of the
+# target_variable specified below. Using dicts allows for different metrics per target variable.
 metrics:
 - NSE
 - NNSE
@@ -56,22 +57,37 @@ metrics:
 - KGE
 - Pearson-r
 
-# path to weight file - leave empty for fresh start
+# --- Model configuration --------------------------------------------------------------------------
+model: fedformer
+
+# path to weight file that should be used as initial weights. Leave empty to start from random weights
 checkpoint_path:
 
-# prediction head
+# prediction head [regression]. Define the head specific parameters below
 head: regression
 
 # ----> Regression settings <----
 output_activation: linear
 
 # ----> Embedding network settings <----
+# define embedding network for static inputs
+# statics_embedding:
+#   type: fc
+#   # define number of neurons per layer in the FC network used as embedding network
+#   hiddens:
+#     - 32
+#     - 64
+#   # activation function of embedding network
+#   activation: tanh
+#   # dropout applied to embedding network
+#   dropout: 0.2
+
 statics_embedding:
   type: fc
   # define number of neurons per layer in the FC network used as embedding network
   hiddens:
-    - 32
-    - 64
+    - 16
+    # - 64
   # activation function of embedding network
   activation: tanh
   # dropout applied to embedding network
@@ -82,64 +98,95 @@ dynamics_embedding:
   type: fc
   # define number of neurons per layer in the FC network used as embedding network
   hiddens:
-    - 64
-    - 128
+    - 32
+    # - 128
   # activation function of embedding network
   activation: tanh
   # dropout applied to embedding network
   dropout: 0.1
 
-# ----> General settings <----
-
-# Hidden size should be divisible by transformer_nheads
-hidden_size: 256
-
-output_dropout: 0.1
-
 # ----> Transformer settings <----
 
-transformer_nlayers: 2
+# number of layers in transformer encoding:
+transformer_nlayers: 1
+
+# type of positional encoding (sum or concatenate)
 transformer_positional_encoding_type: sum
-transformer_dim_feedforward: 512
+
+# dimension of feedforward in each encoding layer
+transformer_dim_feedforward: 128
+
+# dropout applied only to the positional encoding
 transformer_positional_dropout: 0.1
+
+# dropout used in the encoding layers
 transformer_dropout: 0.1
 
+# number of transformer heads
 transformer_nheads: 4
+
+# ----> General settings <----
+
+# Number of cell states of the LSTM
+hidden_size: 32
 
 # --- Training configuration -----------------------------------------------------------------------
 
+# specify optimizer [Adam]
 optimizer: AdamW
 
-# Start with MSE for stability, switch to NSE later if needed
+# num_workers: 8
+
+# specify loss [MSE, NSE, RMSE]
 loss: NSE
 
-learning_rate: 1e-4
+learning_rate: 0.0001
 
-batch_size: 256
+# Mini-batch size
+batch_size: 256 
 
+# Number of training epochs
 epochs: 50
 
+# adds noise with given std to the labels during training. Leave empty or set to 0 if not used.
 target_noise_std: 
 
-# Good gradient clipping value
+# If a value, clips the gradients during training to that norm.
 clip_gradient_norm: 1
 
-# Start with single-step prediction
+
+# Defines which time steps are used to calculate the loss. Can't be larger than seq_length.
 predict_last_n: 1
 
-# REDUCED: From 512 to 256 for stability
-seq_length: 1024
+# Length of the input sequence
+seq_length: 256
 
-log_interval: 20
+
+# Log the training loss every n steps
+log_interval: 1
+
+# If true, writes logging results into tensorboard file
 log_tensorboard: True
-log_n_figures: 5
+
+# If a value and greater than 0, logs n random basins as figures during validation
+log_n_figures: 2
+
+# Save model weights every n epochs
 save_weights_every: 1
+
+# Store the results of the validation to disk
 save_validation_results: True
+
 
 # --- Data configurations --------------------------------------------------------------------------
 
+# which data set to use [camels_us, camels_gb, global, hourly_camels_us, camels_cl, generic]
 dataset: nwm3retro
-data_dir: data1
+
+# Path to data set root
+data_dir: data/n1
+
+# Set to True, if train data file should be save to disk. If empty or False, train data is not saved.
 save_train_data: False
 
 dynamic_inputs:
@@ -158,12 +205,15 @@ dynamic_inputs:
 - DLWRF_surface_u
 - UGRD_10maboveground_u
 
+# which columns to use as target
 target_variables:
 - streamflow_u
 
+# clip negative predictions to zero for all variables listed below. Should be a list, even for single variables.
 clip_targets_to_zero:
 - streamflow_u
 
+# Which CAMELS attributes to use. Leave empty if none should be used
 static_attributes:
 - Contributing_Area_u
 - alt_u
@@ -203,4 +253,5 @@ patience_early_stopping: 10
 minimum_epochs_before_early_stopping: 10 
 dynamic_learning_rate: True 
 patience_dynamic_learning_rate: 3 
-factor_dynamic_learning_rate: 0.5
+factor_dynamic_learning_rate: 0.5 
+
