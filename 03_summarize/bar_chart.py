@@ -11,7 +11,7 @@ def extract_total_summary(filepath):
     with open(filepath, "r") as f:
         text = f.read()
 
-    pattern = r"====== Total Summary ======(.*?)(?======|$)"
+    pattern = r"====== Positive NSE Summary ======(.*?)(?======|$)"
     match = re.search(pattern, text, flags=re.DOTALL)
 
     if not match:
@@ -101,7 +101,7 @@ def plot_selected_metrics(models_dict, save_folder="plots"):
     ax.set_xticks(x)
     ax.set_xticklabels(selected_metrics)
     ax.set_ylabel("Median Values")
-    # ax.set_title("Performance Comparison of Model for Combined Configuration", pad=10)
+    ax.set_title("Performance Comparison of Model for Combined Configuration", pad=10)
     
     # Add subtle grid for readability
     ax.grid(axis='y', linestyle='--', alpha=0.1)
@@ -113,8 +113,8 @@ def plot_selected_metrics(models_dict, save_folder="plots"):
     
     plt.tight_layout()
 
-    png_path = os.path.join(save_folder, "selected_metrics_comparison_no_title_total.png")
-    pdf_path = os.path.join(save_folder, "selected_metrics_comparison_no_title_total.pdf")
+    png_path = os.path.join(save_folder, "selected_metrics_comparison_title.png")
+    pdf_path = os.path.join(save_folder, "selected_metrics_comparison_title.pdf")
 
     plt.savefig(png_path, dpi=100, bbox_inches='tight')
     plt.savefig(pdf_path, bbox_inches='tight')
