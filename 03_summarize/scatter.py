@@ -201,8 +201,8 @@ def plot_individual_scatters_vertical(data_dict, save_folder="plots"):
                 fontsize=14, fontweight='bold')
     plt.tight_layout(rect=[0, 0, 1, 0.98])
     
-    png_path = os.path.join(save_folder, "nnse_scatter_subplots_vertical.png")
-    pdf_path = os.path.join(save_folder, "nnse_scatter_subplots_vertical.pdf")
+    png_path = os.path.join(save_folder, "nnse_scatter_subplots_vertical_2x2.png")
+    pdf_path = os.path.join(save_folder, "nnse_scatter_subplots_vertical_2x2.pdf")
     plt.savefig(png_path, dpi=300, bbox_inches='tight')
     plt.savefig(pdf_path, bbox_inches='tight')
     plt.close()
@@ -226,7 +226,7 @@ def plot_individual_scatters_with_trend(data_dict, save_folder="plots"):
         nrows, ncols = 2, 2
         figsize = (10, 8)
     else:
-        nrows, ncols = 2, 3
+        nrows, ncols = 2, 2
         figsize = (14, 8)
     
     fig, axes = plt.subplots(nrows, ncols, figsize=figsize)
@@ -276,8 +276,8 @@ def plot_individual_scatters_with_trend(data_dict, save_folder="plots"):
                 fontsize=14, fontweight='bold', y=0.98)
     plt.tight_layout(rect=[0, 0, 1, 0.96])
     
-    png_path = os.path.join(save_folder, "nnse_scatter_subplots_trend.png")
-    pdf_path = os.path.join(save_folder, "nnse_scatter_subplots_trend.pdf")
+    png_path = os.path.join(save_folder, "nnse_scatter_subplots_trend_2x2.png")
+    pdf_path = os.path.join(save_folder, "nnse_scatter_subplots_trend_2x2.pdf")
     plt.savefig(png_path, dpi=300, bbox_inches='tight')
     plt.savefig(pdf_path, bbox_inches='tight')
     plt.close()

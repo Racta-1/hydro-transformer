@@ -1,0 +1,64 @@
+================================================================================
+Basin Performance Summary (NNSE > 0.5)
+================================================================================
+
+Model: PITransformer
+  Basins (Combined): 601
+  Basins (Upstream) : 601
+  NNSE > 0.5 (Combined): 481 (80.03%)
+  NNSE > 0.5 (Upstream) : 391 (65.06%)
+  Mean NNSE (Combined): 0.7442
+  Mean NNSE (Upstream): 0.5228
+  % Mean Improvement:   42.34%
+  Median NNSE (Combined): 0.9140
+  Median NNSE (Upstream): 0.5614
+  % Median Improvement:   62.82%
+
+Model: Transformer
+  Basins (Combined): 601
+  Basins (Upstream) : 601
+  NNSE > 0.5 (Combined): 551 (91.68%)
+  NNSE > 0.5 (Upstream) : 452 (75.21%)
+  Mean NNSE (Combined): 0.8007
+  Mean NNSE (Upstream): 0.5490
+  % Mean Improvement:   45.85%
+  Median NNSE (Combined): 0.9016
+  Median NNSE (Upstream): 0.5623
+  % Median Improvement:   60.36%
+
+Model: FEDformer
+  Basins (Combined): 601
+  Basins (Upstream) : 601
+  NNSE > 0.5 (Combined): 542 (90.18%)
+  NNSE > 0.5 (Upstream) : 357 (59.40%)
+  Mean NNSE (Combined): 0.7968
+  Mean NNSE (Upstream): 0.4865
+  % Mean Improvement:   63.77%
+  Median NNSE (Combined): 0.9181
+  Median NNSE (Upstream): 0.5033
+  % Median Improvement:   82.43%
+
+Model: Informer
+  Basins (Combined): 601
+  Basins (Upstream) : 601
+  NNSE > 0.5 (Combined): 549 (91.35%)
+  NNSE > 0.5 (Upstream) : 495 (82.36%)
+  Mean NNSE (Combined): 0.8108
+  Mean NNSE (Upstream): 0.5425
+  % Mean Improvement:   49.45%
+  Median NNSE (Combined): 0.9181
+  Median NNSE (Upstream): 0.5543
+  % Median Improvement:   65.63%
+
+Model: LSTM
+  Basins (Combined): 604
+  Basins (Upstream) : 604
+  NNSE > 0.5 (Combined): 544 (90.07%)
+  NNSE > 0.5 (Upstream) : 511 (84.60%)
+  Mean NNSE (Combined): 0.7688
+  Mean NNSE (Upstream): 0.5959
+  % Mean Improvement:   29.02%
+  Median NNSE (Combined): 0.8329
+  Median NNSE (Upstream): 0.6057
+  % Median Improvement:   37.52%
+================================================================================

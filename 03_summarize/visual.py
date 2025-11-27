@@ -388,9 +388,10 @@ def cliffs_delta(x, y):
 # -------------------------------------------------
 # Generate significance table
 # -------------------------------------------------
-def compute_significance_table(nnse_combined, nnse_upstream):
+def compute_significance_table(nnse_combined, nnse_upstream, output_path="significance_summary.txt"):
     """
-    nnse_combined/upstream are dicts: {model: array}
+    Computes Wilcoxon test, median differences, and Cliff's delta
+    for each model and saves results to a TXT file.
     """
     results = []
 
@@ -401,7 +402,7 @@ def compute_significance_table(nnse_combined, nnse_upstream):
         # Paired Wilcoxon test
         stat, p = wilcoxon(x, y, zero_method='wilcox', alternative='greater')
 
-        # Effect size (Cliff's delta)
+        # Effect size (Cliff's Delta)
         delta = cliffs_delta(x, y)
 
         # Median difference
@@ -409,14 +410,37 @@ def compute_significance_table(nnse_combined, nnse_upstream):
 
         results.append({
             "Model": model,
-            "Median_Combined": np.median(x),
-            "Median_Upstream": np.median(y),
-            "Δ Median (C - U)": median_diff,
-            "Wilcoxon p-value": p,
-            "Cliff's Delta": delta
+            "Median_Combined": float(np.median(x)),
+            "Median_Upstream": float(np.median(y)),
+            "Δ Median (C - U)": float(median_diff),
+            "Cliffs Delta": float(delta),
+            "Wilcoxon p-value": float(p)
         })
 
-    return pd.DataFrame(results)
+    # ---- Format output text ----
+    lines = []
+    header = "="*80 + "\nSignificance Test Results (Combined vs Upstream)\n" + "="*80 + "\n"
+    lines.append(header)
+
+    for r in results:
+        block = (
+            f"\nModel: {r['Model']}\n"
+            f"  Median (Combined): {r['Median_Combined']:.6f}\n"
+            f"  Median (Upstream): {r['Median_Upstream']:.6f}\n"
+            f"  Δ Median (C - U):  {r['Δ Median (C - U)']:.6f}\n"
+            f"  Cliff's Delta:     {r['Cliffs Delta']:.6f}\n"
+            f"  Wilcoxon p-value:  {r['Wilcoxon p-value']:.6e}\n"
+        )
+        lines.append(block)
+
+    lines.append("\n" + "="*80 + "\n")
+
+    # ---- Save to text file ----
+    with open(output_path, "w") as f:
+        f.writelines(lines)
+
+    print(f"Significance summary successfully saved to: {output_path}")
+
 
 def plot_side_by_side(data_combined, data_upstream, save_folder="plots_side_by_side"):
     """
@@ -525,6 +549,202 @@ def print_summary_statistics(data_dict):
         print(f"  Q1:      {np.percentile(nnse_values, 25):.4f}")
         print(f"  Q3:      {np.percentile(nnse_values, 75):.4f}")
 
+def save_basin_nnse_summary(
+        nnse_combined, 
+        nnse_upstream, 
+        output_path="basin_nnse_summary.txt", 
+        threshold=0.5):
+    """
+    Computes:
+      - Basin count
+      - Basins with NNSE > threshold
+      - Mean NNSE (Combined and Upstream)
+      - Median NNSE (Combined and Upstream)
+      - % improvement in mean and median NNSE
+    Saves results to TXT and prints them.
+    """
+
+    lines = []
+    header = (
+        f"{'='*80}\n"
+        f"Basin Performance Summary (NNSE > {threshold})\n"
+        f"{'='*80}\n"
+    )
+    print(header)
+    lines.append(header)
+
+    for model in nnse_combined.keys():
+        combined_vals = nnse_combined[model]
+        upstream_vals = nnse_upstream[model]
+
+        # Basin count
+        n_combined = len(combined_vals)
+        n_upstream = len(upstream_vals)
+
+        # Basins above threshold
+        good_combined = np.sum(combined_vals > threshold)
+        good_upstream = np.sum(upstream_vals > threshold)
+
+        pct_combined = 100 * good_combined / n_combined
+        pct_upstream = 100 * good_upstream / n_upstream
+
+        # Mean & Median
+        mean_combined = np.mean(combined_vals)
+        mean_upstream = np.mean(upstream_vals)
+
+        median_combined = np.median(combined_vals)
+        median_upstream = np.median(upstream_vals)
+
+        # Percent improvements
+        pct_mean_improvement = 100 * (mean_combined - mean_upstream) / abs(mean_upstream)
+        pct_median_improvement = 100 * (median_combined - median_upstream) / abs(median_upstream)
+
+        block = (
+            f"\nModel: {model}\n"
+            f"  Basins (Combined): {n_combined}\n"
+            f"  Basins (Upstream) : {n_upstream}\n"
+            f"  NNSE > {threshold} (Combined): {good_combined} ({pct_combined:.2f}%)\n"
+            f"  NNSE > {threshold} (Upstream) : {good_upstream} ({pct_upstream:.2f}%)\n"
+            f"  Mean NNSE (Combined): {mean_combined:.4f}\n"
+            f"  Mean NNSE (Upstream): {mean_upstream:.4f}\n"
+            f"  % Mean Improvement:   {pct_mean_improvement:.2f}%\n"
+            f"  Median NNSE (Combined): {median_combined:.4f}\n"
+            f"  Median NNSE (Upstream): {median_upstream:.4f}\n"
+            f"  % Median Improvement:   {pct_median_improvement:.2f}%\n"
+        )
+
+        print(block)
+        lines.append(block)
+
+    footer = f"{'='*80}\n"
+    print(footer)
+    lines.append(footer)
+
+    # Save to TXT
+    with open(output_path, "w") as f:import pandas as pd
+import numpy as np
+import os
+
+# ----------------------------------------
+# Helper: Automatically detect metric columns
+# ----------------------------------------
+def detect_column(df, keywords):
+    for col in df.columns:
+        for key in keywords:
+            if key.lower() in col.lower():
+                return col
+    return None
+
+
+# ----------------------------------------
+# Load metrics for one model
+# ----------------------------------------
+def load_metrics(filepath):
+    df = pd.read_csv(filepath)
+
+    metrics = {}
+    metrics["NNSE"] = df[detect_column(df, ["nnse"])]
+    metrics["KGE"] = df[detect_column(df, ["kge"])]
+    metrics["PCC"] = df[detect_column(df, ["pearson", "corr", "r"])]
+    metrics["RMSE"] = df[detect_column(df, ["rmse"])]
+    metrics["MAE"] = df[detect_column(df, ["mae"])]
+
+    return metrics
+
+
+# ----------------------------------------
+# Compute statistics for upstream & combined
+# ----------------------------------------
+def compute_stats(metrics_up, metrics_comb, threshold=0.5):
+    stats = {}
+
+    for metric in metrics_comb.keys():
+        x_up = metrics_up[metric]
+        x_comb = metrics_comb[metric]
+
+        stats[metric] = {
+            "median_up": np.median(x_up),
+            "median_comb": np.median(x_comb),
+            "mean_up": np.mean(x_up),
+            "mean_comb": np.mean(x_comb),
+        }
+
+    # NNSE-specific
+    nnse_up = metrics_up["NNSE"]
+    nnse_comb = metrics_comb["NNSE"]
+
+    stats["basin_count_up"] = len(nnse_up)
+    stats["basin_count_comb"] = len(nnse_comb)
+
+    stats["nnse_pct_up"] = 100 * np.sum(nnse_up > threshold) / len(nnse_up)
+    stats["nnse_pct_comb"] = 100 * np.sum(nnse_comb > threshold) / len(nnse_comb)
+
+    return stats
+
+
+# ----------------------------------------
+# Produce LaTeX table rows
+# ----------------------------------------
+def generate_latex_table(model_name, stats):
+    latex = []
+
+    def fmt(x):
+        return f"{x:.3f}"
+
+    latex.append(f"% ------- {model_name} -------")
+    latex.append(f"\\textbf{{NNSE}} & {fmt(stats['NNSE']['median_up'])} & {fmt(stats['NNSE']['median_comb'])} & {fmt(stats['NNSE']['mean_up'])} & {fmt(stats['NNSE']['mean_comb'])} \\\\")
+    latex.append(f"\\textbf{{KGE}} & {fmt(stats['KGE']['median_up'])} & {fmt(stats['KGE']['median_comb'])} & {fmt(stats['KGE']['mean_up'])} & {fmt(stats['KGE']['mean_comb'])} \\\\")
+    latex.append(f"\\textbf{{Pearson-$r$}} & {fmt(stats['PCC']['median_up'])} & {fmt(stats['PCC']['median_comb'])} & {fmt(stats['PCC']['mean_up'])} & {fmt(stats['PCC']['mean_comb'])} \\\\")
+    latex.append(f"\\textbf{{RMSE}} & {fmt(stats['RMSE']['median_up'])} & {fmt(stats['RMSE']['median_comb'])} & {fmt(stats['RMSE']['mean_up'])} & {fmt(stats['RMSE']['mean_comb'])} \\\\")
+    latex.append(f"\\textbf{{MAE}} & {fmt(stats['MAE']['median_up'])} & {fmt(stats['MAE']['median_comb'])} & {fmt(stats['MAE']['mean_up'])} & {fmt(stats['MAE']['mean_comb'])} \\\\")
+    latex.append("\\midrule")
+    latex.append(f"\\textbf{{Basin Count}} & {stats['basin_count_up']} & {stats['basin_count_comb']} & -- & -- \\\\")
+    latex.append(f"\\textbf{{\\% Basins NNSE > 0.5}} & {stats['nnse_pct_up']:.2f}\\% & {stats['nnse_pct_comb']:.2f}\\% & -- & -- \\\\")
+    latex.append("\\midrule\n")
+
+    return "\n".join(latex)
+
+
+# ----------------------------------------
+# MAIN FUNCTION
+# ----------------------------------------
+def run_table_generator(combined_paths, upstream_paths, output_txt="latex_table_output.txt"):
+    lines = []
+    for model in combined_paths.keys():
+        print(f"Processing {model}...")
+
+        metrics_comb = load_metrics(combined_paths[model])
+        metrics_up = load_metrics(upstream_paths[model])
+
+        stats = compute_stats(metrics_up, metrics_comb)
+
+        latex_rows = generate_latex_table(model, stats)
+        lines.append(latex_rows)
+
+    with open(output_txt, "w") as f:
+        f.write("\n".join(lines))
+
+    print(f"\nSaved LaTeX table rows to {output_txt}")
+
+
+# ----------------------------------------
+# EXAMPLE USAGE
+# ----------------------------------------
+if __name__ == "__main__":
+    combined_csv = {
+        "Transformer": "./exp/transformer/combined/test_metrics.csv"
+    }
+
+    upstream_csv = {
+        "Transformer": "./exp/transformer/upstream/test_metrics.csv"
+    }
+
+    run_table_generator(combined_csv, upstream_csv)
+
+        f.writelines(lines)
+
+    print(f"Summary saved to: {output_path}")
+
 
 # ----------------------------------------------------------------------
 # Example Usage
@@ -573,9 +793,11 @@ if __name__ == "__main__":
     plot_side_by_side(nnse_data, nnse_data_upstream)
     plot_combined_upstream_box_violin(nnse_data, nnse_data_upstream)
 
-    significance_df = compute_significance_table(nnse_data, nnse_data_upstream)
-    print(significance_df.to_string(index=False))
+    # significance_df = compute_significance_table(nnse_data, nnse_data_upstream)
+    # print(significance_df.to_string(index=False))
+    compute_significance_table(nnse_data, nnse_data_upstream, output_path="significance_summary.txt")
 
-    
+    save_basin_nnse_summary(nnse_data, nnse_data_upstream, output_path="basin_summary.txt")
+
     # Print summary statistics
     # print_summary_statistics(nnse_data)

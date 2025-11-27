@@ -1,0 +1,40 @@
+================================================================================
+Significance Test Results (Combined vs Upstream)
+================================================================================
+
+Model: PITransformer
+  Median (Combined): 0.914031
+  Median (Upstream): 0.561374
+  Δ Median (C - U):  0.352657
+  Cliff's Delta:     0.660566
+  Wilcoxon p-value:  6.902028e-71
+
+Model: Transformer
+  Median (Combined): 0.901632
+  Median (Upstream): 0.562253
+  Δ Median (C - U):  0.339379
+  Cliff's Delta:     0.840266
+  Wilcoxon p-value:  3.646932e-90
+
+Model: FEDformer
+  Median (Combined): 0.918098
+  Median (Upstream): 0.503257
+  Δ Median (C - U):  0.414840
+  Cliff's Delta:     0.833611
+  Wilcoxon p-value:  1.949508e-89
+
+Model: Informer
+  Median (Combined): 0.918109
+  Median (Upstream): 0.554313
+  Δ Median (C - U):  0.363796
+  Cliff's Delta:     0.856905
+  Wilcoxon p-value:  6.872423e-91
+
+Model: LSTM
+  Median (Combined): 0.832887
+  Median (Upstream): 0.605668
+  Δ Median (C - U):  0.227219
+  Cliff's Delta:     0.754967
+  Wilcoxon p-value:  2.792180e-78
+
+================================================================================

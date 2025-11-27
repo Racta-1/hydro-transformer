@@ -1,0 +1,10 @@
+% ------- Transformer -------
+\textbf{NNSE} & 0.562 & 0.902 & 0.549 & 0.801 \\
+\textbf{KGE} & 0.197 & 0.794 & -0.652 & -11.420 \\
+\textbf{Pearson-$r$} & 0.610 & 0.962 & 0.559 & 0.853 \\
+\textbf{RMSE} & 2.405 & 0.561 & 8.677 & 3.033 \\
+\midrule
+\textbf{Basin Count} & 601 & 601 & -- & -- \\
+\textbf{\% Basins NNSE > 0.5} & 16.31\% & 72.71\% & -- & -- \\
+\midrule
+median up, comb, mean up, comb
