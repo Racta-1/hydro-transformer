@@ -366,6 +366,58 @@ def plot_combined_box_violin(data_dict, save_folder="plots"):
     
     print(f"Saved combined plot: {png_path}, {pdf_path}")
 
+
+import numpy as np
+import pandas as pd
+from scipy.stats import wilcoxon
+
+# -------------------------------------------------
+# Cliff’s delta (effect size)
+# -------------------------------------------------
+def cliffs_delta(x, y):
+    """
+    Computes Cliff's Delta effect size for paired samples.
+    Positive delta means x > y.
+    """
+    n = len(x)
+    greater = sum([1 for i in range(n) if x[i] > y[i]])
+    lesser = sum([1 for i in range(n) if x[i] < y[i]])
+    return (greater - lesser) / n
+
+
+# -------------------------------------------------
+# Generate significance table
+# -------------------------------------------------
+def compute_significance_table(nnse_combined, nnse_upstream):
+    """
+    nnse_combined/upstream are dicts: {model: array}
+    """
+    results = []
+
+    for model in nnse_combined.keys():
+        x = nnse_combined[model]
+        y = nnse_upstream[model]
+
+        # Paired Wilcoxon test
+        stat, p = wilcoxon(x, y, zero_method='wilcox', alternative='greater')
+
+        # Effect size (Cliff's delta)
+        delta = cliffs_delta(x, y)
+
+        # Median difference
+        median_diff = np.median(x) - np.median(y)
+
+        results.append({
+            "Model": model,
+            "Median_Combined": np.median(x),
+            "Median_Upstream": np.median(y),
+            "Δ Median (C - U)": median_diff,
+            "Wilcoxon p-value": p,
+            "Cliff's Delta": delta
+        })
+
+    return pd.DataFrame(results)
+
 def plot_side_by_side(data_combined, data_upstream, save_folder="plots_side_by_side"):
     """
     Create a single plot where each model has two boxplots:
@@ -521,7 +573,8 @@ if __name__ == "__main__":
     plot_side_by_side(nnse_data, nnse_data_upstream)
     plot_combined_upstream_box_violin(nnse_data, nnse_data_upstream)
 
-
+    significance_df = compute_significance_table(nnse_data, nnse_data_upstream)
+    print(significance_df.to_string(index=False))
 
     
     # Print summary statistics

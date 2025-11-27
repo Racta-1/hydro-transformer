@@ -11,7 +11,7 @@ def extract_total_summary(filepath):
     with open(filepath, "r") as f:
         text = f.read()
 
-    pattern = r"====== Positive NSE Summary ======(.*?)(?======|$)"
+    pattern = r"====== Total Summary ======(.*?)(?======|$)"
     match = re.search(pattern, text, flags=re.DOTALL)
 
     if not match:
@@ -37,7 +37,7 @@ def plot_selected_metrics(models_dict, save_folder="plots"):
     # Academic paper color palette (professional, print-friendly)
     colors = [
         '#2E4057',  # Dark blue-grey (PITransformer)
-        # '#048A81',  # Teal (Transformer)
+        '#048A81',  # Teal (Transformer)
         '#54C6EB',  # Sky blue (FEDformer)
         '#F18F01',  # Orange (Informer)
         # '#8B4513',   # Red-orange (CNN-1D)
@@ -113,8 +113,8 @@ def plot_selected_metrics(models_dict, save_folder="plots"):
     
     plt.tight_layout()
 
-    png_path = os.path.join(save_folder, "selected_metrics_comparison_no_title.png")
-    pdf_path = os.path.join(save_folder, "selected_metrics_comparison_no_title.pdf")
+    png_path = os.path.join(save_folder, "selected_metrics_comparison_no_title_total.png")
+    pdf_path = os.path.join(save_folder, "selected_metrics_comparison_no_title_total.pdf")
 
     plt.savefig(png_path, dpi=100, bbox_inches='tight')
     plt.savefig(pdf_path, bbox_inches='tight')
@@ -130,7 +130,7 @@ def plot_selected_metrics(models_dict, save_folder="plots"):
 
 files = {
     "PITransformer": "./results1/pitrans_comb2411/evaluation_report_complete.txt",
-    # "Transformer": "./results1/trans_comb2111/evaluation_report_complete.txt",
+    "Transformer": "./results1/trans_comb2111/evaluation_report_complete.txt",
     "FEDformer": "./results1/fedformer_comb2211/evaluation_report_complete.txt",
     "Informer": "./results1/informer_comb2211/evaluation_report_complete.txt",
     # "CNN-1D": "./results1/cnn_comb2211/evaluation_report_complete.txt"
