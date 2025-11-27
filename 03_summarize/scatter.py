@@ -27,7 +27,7 @@ def set_academic_style():
 # Academic color palette
 COLORS = {
     'PITransformer': '#2E4057',  # Deep blue
-    # 'Transformer': '#048A81',    # Sea green
+    'Transformer': '#048A81',    # Sea green
     'FEDformer': '#54C6EB',      # Cadet blue
     'Informer': '#F18F01',       # Peru (tan/orange)
     # 'CNN-1D': '#8B4513',         # Saddle brown
@@ -116,7 +116,7 @@ def plot_individual_scatters(data_dict, save_folder="plots"):
         # Styling
         ax.set_xlabel("Basin Index")
         ax.set_ylabel("NNSE Score")
-        ax.set_title(f"{model_name}", fontweight='bold')
+        ax.set_title(f"{model_name}")
         ax.grid(axis='y', linestyle='--', alpha=0.3)
         ax.set_ylim(y_min - y_margin, y_max + y_margin)
         ax.legend(loc='lower right', frameon=True, edgecolor='black')
@@ -137,7 +137,7 @@ def plot_individual_scatters(data_dict, save_folder="plots"):
         axes[idx].set_visible(False)
     
     plt.suptitle("NNSE Scores Across Basins by Model", 
-                fontsize=14, fontweight='bold', y=0.98)
+                fontsize=14, y=0.95)
     plt.tight_layout(rect=[0, 0, 1, 0.96])
     
     # Save
@@ -291,7 +291,7 @@ def plot_individual_scatters_with_trend(data_dict, save_folder="plots"):
 if __name__ == "__main__":
     csv_files = {
         "PITransformer": "./exp/pitransformer1/transformer_combined_2411_190850/resume_from001/test/model_epoch001/test_metrics.csv",
-        # "Transformer": "./exp/transformer1/transformer_combined_2111_083844/resume_from002/test/model_epoch001/test_metrics.csv",
+        "Transformer": "./exp/transformer1/transformer_combined_2111_083844/resume_from002/test/model_epoch001/test_metrics.csv",
         "FEDformer": "./exp/fedformer1/fedformer_combined_2111_203206/test/model_epoch002/test_metrics.csv",
         "Informer": "./exp/informer1/informer_combined_2211_030811/resume_from002/test/model_epoch001/test_metrics.csv",
         # "CNN-1D": "./exp/cnn1/cnn_combined_2211_191525/test/model_epoch002/test_metrics.csv",
