@@ -48,7 +48,7 @@ metrics:
 # --- Model configuration --------------------------------------------------------------------------
 
 # base model type [lstm, ealstm, cudalstm, embcudalstm, mtslstm]
-model: modifiedcudalstm
+model: mclstm
 
 # prediction head [regression]. Define the head specific parameters below
 head: regression

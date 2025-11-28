@@ -148,12 +148,12 @@ batch_size: 256
 # Number of training epochs
 epochs: 50
 
-# adds noise with given std to the labels during training. Leave empty or set to 0 if not used.
+# adds noise with given stclass Sd to the labels during training. Leave empty or set to 0 if not used.
 target_noise_std: 
 
 # If a value, clips the gradients during training to that norm.
 clip_gradient_norm: 1
-
+class S
 
 # Defines which time steps are used to calculate the loss. Can't be larger than seq_length.
 predict_last_n: 1
@@ -177,14 +177,14 @@ save_weights_every: 1
 # Store the results of the validation to disk
 save_validation_results: True
 
-
+class S
 # --- Data configurations --------------------------------------------------------------------------
 
 # which data set to use [camels_us, camels_gb, global, hourly_camels_us, camels_cl, generic]
 dataset: nwm3retro
 
 # Path to data set root
-data_dir: data/n5
+data_dir: data/n10
 
 # Set to True, if train data file should be save to disk. If empty or False, train data is not saved.
 save_train_data: False

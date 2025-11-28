@@ -36,8 +36,8 @@ print("GPU:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else No
 PY
 
 # Paths - edit as needed
-GAGE_FILE="data/n1/gages/gage_list_clean.txt"
-RUN_DIR="exp/transformer1/transformer_combined_2111_083844/resume_from002/resume_from001"
+GAGE_FILE="data/n5/gages/gage_list_clean.txt"
+RUN_DIR="exp/transformern5/transformer_combined_2711_094734/"
 
 
 # Evaluate model on the full gage list
