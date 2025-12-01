@@ -57,7 +57,7 @@ def plot_selected_metrics(models_dict, save_folder="plots"):
     # colors = ['#000000', '#404040', '#808080', '#B0B0B0', '#D3D3D3']
     
     # metrics to include in bar chart
-    selected_metrics = ["NSE", "KGE", "Pearson-r", "RMSE"]
+    selected_metrics = ["NNSE", "KGE", "Pearson-r", "RMSE"]
 
     os.makedirs(save_folder, exist_ok=True)
 

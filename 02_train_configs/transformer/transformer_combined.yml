@@ -153,7 +153,7 @@ target_noise_std:
 
 # If a value, clips the gradients during training to that norm.
 clip_gradient_norm: 1
-class S
+
 
 # Defines which time steps are used to calculate the loss. Can't be larger than seq_length.
 predict_last_n: 1
@@ -177,7 +177,7 @@ save_weights_every: 1
 # Store the results of the validation to disk
 save_validation_results: True
 
-class S
+
 # --- Data configurations --------------------------------------------------------------------------
 
 # which data set to use [camels_us, camels_gb, global, hourly_camels_us, camels_cl, generic]

@@ -37,7 +37,7 @@ PY
 
 # Paths - edit as needed
 GAGE_FILE="data/n5/gages/gage_list_clean.txt"
-RUN_DIR="exp/transformern5/transformer_combined_2711_094734/"
+RUN_DIR="exp/transformern5/transformer_combined_2711_094734/resume_from001"
 
 
 # Evaluate model on the full gage list
