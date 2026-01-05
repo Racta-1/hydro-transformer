@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=test_tc1 # edit as needed
+#SBATCH --job-name=test_lu1 # edit as needed
 #SBATCH --partition=gpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -36,8 +36,8 @@ print("GPU:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else No
 PY
 
 # Paths - edit as needed
-GAGE_FILE="data/n5/gages/gage_list_clean.txt"
-RUN_DIR="exp/transformern5/transformer_combined_2711_094734/resume_from001"
+GAGE_FILE="data/n40/gages/gage_list.txt"
+RUN_DIR="exp/transformer40/transformer_upstream_0301_172349/"
 
 
 # Evaluate model on the full gage list

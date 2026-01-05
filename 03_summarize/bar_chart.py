@@ -36,12 +36,12 @@ def extract_total_summary(filepath):
 def plot_selected_metrics(models_dict, save_folder="plots"):
     # Academic paper color palette (professional, print-friendly)
     colors = [
-        '#2E4057',  # Dark blue-grey (PITransformer)
-        '#048A81',  # Teal (Transformer)
-        '#54C6EB',  # Sky blue (FEDformer)
-        '#F18F01',  # Orange (Informer)
+        '#440154',  # Dark blue-grey (PITransformer)
+        '#3A528B',  # Teal (Transformer)
+        '#20908C',  # Sky blue (FEDformer)
+        '#5EC961',  # Orange (Informer)
         # '#8B4513',   # Red-orange (CNN-1D)
-        '#C73E1D'
+        # '#C73E1D'
     ]
     
     # Alternative grayscale-friendly palette (uncomment to use):
@@ -101,20 +101,20 @@ def plot_selected_metrics(models_dict, save_folder="plots"):
     ax.set_xticks(x)
     ax.set_xticklabels(selected_metrics)
     ax.set_ylabel("Median Values")
-    ax.set_title("Performance Comparison of Model for Combined Configuration", pad=10)
+    ax.set_title("Performance Comparison of Model for Combined Configuration", pad=10, fontsize=11)
     
     # Add subtle grid for readability
     ax.grid(axis='y', linestyle='--', alpha=0.1)
     ax.set_axisbelow(True)
     
-    # Position legend outside plot area
-    ax.legend(loc='upper left', bbox_to_anchor=(1.01, 1), 
-             fancybox=False, shadow=False)
+    # Position legend INSIDE plot area (upper right corner)
+    ax.legend(loc='upper right', frameon=True, fancybox=False, shadow=False, 
+             framealpha=0.9, edgecolor='gray')
     
     plt.tight_layout()
 
-    png_path = os.path.join(save_folder, "selected_metrics_comparison_title.png")
-    pdf_path = os.path.join(save_folder, "selected_metrics_comparison_title.pdf")
+    png_path = os.path.join(save_folder, "selected_metrics_comparison_title22.png")
+    pdf_path = os.path.join(save_folder, "selected_metrics_comparison_title22.pdf")
 
     plt.savefig(png_path, dpi=100, bbox_inches='tight')
     plt.savefig(pdf_path, bbox_inches='tight')
@@ -129,13 +129,12 @@ def plot_selected_metrics(models_dict, save_folder="plots"):
 # ----------------------------------------------------------------------
 
 files = {
-    "PITransformer": "./results1/pitrans_comb2411/evaluation_report_complete.txt",
-    "Transformer": "./results1/trans_comb2111/evaluation_report_complete.txt",
-    "FEDformer": "./results1/fedformer_comb2211/evaluation_report_complete.txt",
-    "Informer": "./results1/informer_comb2211/evaluation_report_complete.txt",
-    # "CNN-1D": "./results1/cnn_comb2211/evaluation_report_complete.txt"
-    "LSTM": "./results/lstm_comb2210/evaluation_report_complete.txt",
-
+    # "PITransformer": "./results1/pitrans_comb2411/evaluation_report_complete.txt",
+    "Transformer": "../results1/trans_comb2111/evaluation_report_complete.txt",
+    # "FEDformer": "./results1/fedformer_comb2211/evaluation_report_complete.txt",
+    "Informer": "../results1/informer_comb2211/evaluation_report_complete.txt",
+    "CNN-1D": "../results1/cnn_comb2211/evaluation_report_complete.txt",
+    "LSTM": "../results/lstm_comb1311/evaluation_report_complete.txt",
 }
 
 summary_data = {name: extract_total_summary(path) for name, path in files.items()}

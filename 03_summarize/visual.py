@@ -645,7 +645,7 @@ def load_metrics(filepath):
     metrics = {}
     metrics["NNSE"] = df[detect_column(df, ["nnse"])]
     metrics["KGE"] = df[detect_column(df, ["kge"])]
-    metrics["PCC"] = df[detect_column(df, ["pearson", "corr", "r"])]
+    metrics["PCC"] = df[detect_column(df, ["pearson-r"])]
     metrics["RMSE"] = df[detect_column(df, ["rmse"])]
     metrics["MAE"] = df[detect_column(df, ["mae"])]
 
@@ -730,20 +730,20 @@ def run_table_generator(combined_paths, upstream_paths, output_txt="latex_table_
 # ----------------------------------------
 # EXAMPLE USAGE
 # ----------------------------------------
-if __name__ == "__main__":
-    combined_csv = {
-        "Transformer": "./exp/transformer/combined/test_metrics.csv"
-    }
+# if __name__ == "__main__":
+#     combined_csv = {
+#         "Transformer": "./exp/transformer/combined/test_metrics.csv"
+#     }
 
-    upstream_csv = {
-        "Transformer": "./exp/transformer/upstream/test_metrics.csv"
-    }
+#     upstream_csv = {
+#         "Transformer": "./exp/transformer/upstream/test_metrics.csv"
+#     }
 
-    run_table_generator(combined_csv, upstream_csv)
+#     run_table_generator(combined_csv, upstream_csv)
 
-        f.writelines(lines)
+#     f.writelines(lines)
 
-    print(f"Summary saved to: {output_path}")
+#     print(f"Summary saved to: {output_path}")
 
 
 # ----------------------------------------------------------------------
@@ -758,7 +758,7 @@ if __name__ == "__main__":
         "FEDformer": "./exp/fedformer1/fedformer_combined_2111_203206/test/model_epoch002/test_metrics.csv",
         "Informer": "./exp/informer1/informer_combined_2211_030811/resume_from002/test/model_epoch001/test_metrics.csv",
         # "CNN-1D": "./exp/cnn1/cnn_combined_2211_191525/test/model_epoch002/test_metrics.csv",
-        "LSTM": "./exp/lstm/lstm_combined_2210_174624/resume_from001/test/model_epoch001/test_metrics.csv",
+        "LSTM": "./exp/lstm1/lstm_combined_1311_204458/resume_from001/test/model_epoch001/test_metrics.csv",
     }
 
     csv_files_upstream = {
@@ -767,7 +767,7 @@ if __name__ == "__main__":
         "FEDformer": "./exp/fedformer1/fedformer_upstream_2111_171235/test/model_epoch002/test_metrics.csv",
         "Informer": "./exp/informer1/informer_upstream_2211_082817/test/model_epoch002/test_metrics.csv",
         # "CNN-1D": "./exp/cnn1/cnn_upstream_2211_150644/test/model_epoch002/test_metrics.csv",
-        "LSTM": "./exp/lstm/lstm_upstream_2410_135040/test/model_epoch001/test_metrics.csv",
+        "LSTM": "./exp/lstm1/lstm_upstream_1311_222213/resume_from001/test/model_epoch001/test_metrics.csv",
     }
     
     # Load NSE data
@@ -776,8 +776,8 @@ if __name__ == "__main__":
 
     
     # Generate all plots
-    save_folder_combined = "plots_combined"
-    save_folder_upstream = "plots_upstream"
+    save_folder_combined = "plots_combined1"
+    save_folder_upstream = "plots_upstream1"
 
     
     # Combined
@@ -798,6 +798,23 @@ if __name__ == "__main__":
     compute_significance_table(nnse_data, nnse_data_upstream, output_path="significance_summary.txt")
 
     save_basin_nnse_summary(nnse_data, nnse_data_upstream, output_path="basin_summary.txt")
+
+    # ----------------------------------------
+    # RUN LATEX TABLE GENERATOR FOR BOTH MODELS
+    # ----------------------------------------
+
+    combined_csv = {
+        "Transformer": "./exp/transformer1/transformer_combined_2111_083844/resume_from002/test/model_epoch001/test_metrics.csv",
+        "LSTM": "./exp/lstm1/lstm_combined_1311_204458/resume_from001/test/model_epoch001/test_metrics.csv"
+    }
+
+    upstream_csv = {
+        "Transformer": "./exp/transformer1/transformer_upstream_2111_083900/test/model_epoch002/test_metrics.csv",
+        "LSTM": "./exp/lstm1/lstm_upstream_1311_222213/resume_from001/test/model_epoch001/test_metrics.csv"
+    }
+
+    run_table_generator(combined_csv, upstream_csv, output_txt="latex_table_transformer_lstm.txt")
+
 
     # Print summary statistics
     # print_summary_statistics(nnse_data)

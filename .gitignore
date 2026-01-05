@@ -23,7 +23,9 @@ anvil_run.slurm
 anvil_resume.slurm
 results/
 results1/
+ensemble_results/
 # plots/   
+data/RouteLink_CONUS.nc
 
 # === Hydrology / Climate datasets ===
 *.nc

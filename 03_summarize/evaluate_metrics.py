@@ -109,6 +109,23 @@ def pearson_r(y_obs, y_sim):
     if np.std(y_obs) == 0 or np.std(y_sim) == 0: return np.nan
     return np.corrcoef(y_obs, y_sim)[0, 1]
 
+def willmott_dr(y_obs, y_sim):
+    """
+    Calculate Refined Willmott's Index of Agreement (dr)
+    More resistant to outliers
+    """
+    obs_mean = np.mean(y_obs)
+    
+    numerator = np.sum(np.abs(y_obs - y_sim))
+    denominator = 2 * np.sum(np.abs(y_obs - obs_mean))
+    
+    if numerator <= denominator:
+        dr = 1 - (numerator / denominator)
+    else:
+        dr = (denominator / numerator) - 1
+    
+    return dr
+
 def get_time_coord(ds):
     # pick first matching coordinate or index-like coordinate
     for cand in TIME_COORD_CANDIDATES:
